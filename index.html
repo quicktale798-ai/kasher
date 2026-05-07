@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="كاشر">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#00d084">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>كاشر - تتبع دخلك اليومي</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #13131a;
+    --card: #1a1a26;
+    --border: #2a2a3d;
+    --accent: #00d084;
+    --accent2: #7c5cfc;
+    --cash: #f4c53d;
+    --card-color: #00b4d8;
+    --app-color: #00d084;
+    --text: #e8e8f0;
+    --muted: #7070a0;
+    --danger: #ff4d6d;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'IBM Plex Sans Arabic', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 20px 16px 100px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 28px 0 24px;
+    position: relative;
+  }
+  .logo {
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    opacity: 0.8;
+  }
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -1px;
+    background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .header-sub {
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 6px;
+  }
+
+  /* Date selector */
+  .date-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .date-bar input[type="date"] {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    padding: 8px 16px;
+    border-radius: 10px;
+    outline: none;
+    cursor: pointer;
+  }
+  .date-label {
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  /* Summary cards */
+  .summary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .sum-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .sum-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    border-radius: 2px 2px 0 0;
+  }
+  .sum-card.total::before { background: var(--accent); }
+  .sum-card.trips::before { background: var(--accent2); }
+  .sum-card.avg::before   { background: var(--cash); }
+  .sum-card.cash-s::before{ background: var(--card-color); }
+
+  .sum-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  .sum-value { font-size: 26px; font-weight: 700; line-height: 1; }
+  .sum-card.total .sum-value { color: var(--accent); }
+  .sum-card.trips .sum-value { color: var(--accent2); }
+  .sum-card.avg   .sum-value { color: var(--cash); }
+  .sum-card.cash-s .sum-value { color: var(--card-color); }
+  .sum-unit { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+  /* Payment breakdown */
+  .breakdown {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+  .breakdown-title {
+    font-size: 12px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 14px;
+  }
+  .breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .breakdown-row:last-child { margin-bottom: 0; }
+  .bp-label { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+  .bp-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+  }
+  .bp-dot.cash { background: var(--cash); }
+  .bp-dot.card { background: var(--card-color); }
+  .bp-dot.app  { background: var(--app-color); }
+  .bp-amount { font-size: 14px; font-weight: 600; }
+  .bp-bar-wrap {
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-top: 4px;
+    overflow: hidden;
+  }
+  .bp-bar { height: 100%; border-radius: 2px; transition: width 0.5s ease; }
+
+  /* Add trip form */
+  .form-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .form-title {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .form-title span { font-size: 18px; }
+
+  .form-row { margin-bottom: 14px; }
+  .form-row label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; letter-spacing: 0.5px; }
+  .form-row input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 15px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-row input:focus { border-color: var(--accent); }
+  .form-row input::placeholder { color: var(--muted); }
+
+  .payment-types {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+  }
+  .pt-btn {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    color: var(--muted);
+    font-family: inherit;
+    font-size: 13px;
+    padding: 10px 4px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    font-weight: 500;
+  }
+  .pt-btn .pt-icon { font-size: 20px; display: block; margin-bottom: 3px; }
+  .pt-btn.active.cash  { background: rgba(244,197,61,0.15); border-color: var(--cash); color: var(--cash); }
+  .pt-btn.active.card  { background: rgba(0,180,216,0.15); border-color: var(--card-color); color: var(--card-color); }
+  .pt-btn.active.app   { background: rgba(0,208,132,0.15); border-color: var(--app-color); color: var(--app-color); }
+
+  /* App selector */
+  .app-types {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 6px;
+  }
+  .app-btn {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    color: var(--muted);
+    font-family: inherit;
+    font-size: 11px;
+    padding: 8px 2px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  .app-btn .app-icon { font-size: 18px; display: block; margin-bottom: 2px; }
+  .app-btn.active.uber   { background: rgba(0,0,0,0.4); border-color: #ffffff; color: #ffffff; }
+  .app-btn.active.bolt   { background: rgba(52,211,153,0.15); border-color: #34d399; color: #34d399; }
+  .app-btn.active.indrive{ background: rgba(96,165,250,0.15); border-color: #60a5fa; color: #60a5fa; }
+  .app-btn.active.kayaan { background: rgba(251,146,60,0.15); border-color: #fb923c; color: #fb923c; }
+
+  .add-btn {
+    width: 100%;
+    background: var(--accent);
+    color: #000;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 14px;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    margin-top: 4px;
+    transition: opacity 0.2s, transform 0.1s;
+    letter-spacing: 0.5px;
+  }
+  .add-btn:active { transform: scale(0.98); opacity: 0.9; }
+
+  /* Trips list */
+  .trips-section { margin-bottom: 20px; }
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .section-title { font-size: 14px; font-weight: 600; }
+  .clear-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: inherit;
+    font-size: 12px;
+    padding: 5px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .clear-btn:hover { border-color: var(--danger); color: var(--danger); }
+
+  .trip-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    animation: slideIn 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .trip-item::after {
+    content: '';
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 3px;
+    border-radius: 0 14px 14px 0;
+  }
+  .trip-item.cash::after  { background: var(--cash); }
+  .trip-item.card::after  { background: var(--card-color); }
+  .trip-item.app::after   { background: var(--app-color); }
+
+  .trip-left { display: flex; align-items: center; gap: 10px; }
+  .trip-num {
+    width: 30px; height: 30px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700;
+  }
+  .trip-item.cash  .trip-num { background: rgba(244,197,61,0.15); color: var(--cash); }
+  .trip-item.card  .trip-num { background: rgba(0,180,216,0.15); color: var(--card-color); }
+  .trip-item.app   .trip-num { background: rgba(0,208,132,0.15); color: var(--app-color); }
+
+  .trip-info { }
+  .trip-name { font-size: 13px; font-weight: 600; }
+  .trip-pay-badge {
+    font-size: 11px;
+    margin-top: 2px;
+    opacity: 0.7;
+  }
+  .trip-item.cash  .trip-pay-badge { color: var(--cash); }
+  .trip-item.card  .trip-pay-badge { color: var(--card-color); }
+  .trip-item.app   .trip-pay-badge { color: var(--app-color); }
+
+  .trip-right { display: flex; align-items: center; gap: 12px; }
+  .trip-amount { font-size: 17px; font-weight: 700; }
+  .trip-item.cash  .trip-amount { color: var(--cash); }
+  .trip-item.card  .trip-amount { color: var(--card-color); }
+  .trip-item.app   .trip-amount { color: var(--app-color); }
+
+  .del-btn {
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-size: 16px;
+    cursor: pointer;
+    padding: 4px;
+    transition: color 0.2s;
+    line-height: 1;
+  }
+  .del-btn:hover { color: var(--danger); }
+
+  .empty-state {
+    text-align: center;
+    padding: 32px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .empty-state .empty-icon { font-size: 40px; margin-bottom: 10px; }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--accent);
+    color: #000;
+    font-weight: 600;
+    font-size: 13px;
+    padding: 10px 20px;
+    border-radius: 20px;
+    transition: transform 0.3s ease;
+    z-index: 999;
+    white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">كاشر · Kasher</div>
+  <h1>تتبع دخلك اليومي</h1>
+  <div class="header-sub">سجّل رحلاتك وتابع أرباحك بسهولة</div>
+</div>
+
+<!-- Date -->
+<div class="date-bar">
+  <span class="date-label">📅 التاريخ:</span>
+  <input type="date" id="dateInput">
+</div>
+
+<!-- Summary -->
+<div class="summary">
+  <div class="sum-card total">
+    <div class="sum-label">إجمالي اليوم</div>
+    <div class="sum-value" id="totalAmount">0</div>
+    <div class="sum-unit">ريال سعودي</div>
+  </div>
+  <div class="sum-card trips">
+    <div class="sum-label">عدد الرحلات</div>
+    <div class="sum-value" id="totalTrips">0</div>
+    <div class="sum-unit">رحلة</div>
+  </div>
+  <div class="sum-card avg">
+    <div class="sum-label">متوسط الرحلة</div>
+    <div class="sum-value" id="avgTrip">0</div>
+    <div class="sum-unit">ريال / رحلة</div>
+  </div>
+  <div class="sum-card cash-s">
+    <div class="sum-label">نقدي اليوم</div>
+    <div class="sum-value" id="cashTotal">0</div>
+    <div class="sum-unit">ريال</div>
+  </div>
+</div>
+
+<!-- Payment breakdown -->
+<div class="breakdown">
+  <div class="breakdown-title">توزيع طرق الدفع</div>
+  <div class="breakdown-row">
+    <div class="bp-label"><span class="bp-dot cash"></span> كاش</div>
+    <div class="bp-amount" id="cashAmt" style="color:var(--cash)">0 ر</div>
+  </div>
+  <div class="bp-bar-wrap"><div class="bp-bar" id="cashBar" style="background:var(--cash);width:0%"></div></div>
+  <div class="breakdown-row" style="margin-top:10px">
+    <div class="bp-label"><span class="bp-dot card"></span> بطاقة</div>
+    <div class="bp-amount" id="cardAmt" style="color:var(--card-color)">0 ر</div>
+  </div>
+  <div class="bp-bar-wrap"><div class="bp-bar" id="cardBar" style="background:var(--card-color);width:0%"></div></div>
+  <div class="breakdown-row" style="margin-top:10px">
+    <div class="bp-label"><span class="bp-dot app"></span> تطبيق</div>
+    <div class="bp-amount" id="appAmt" style="color:var(--app-color)">0 ر</div>
+  </div>
+  <div class="bp-bar-wrap"><div class="bp-bar" id="appBar" style="background:var(--app-color);width:0%"></div></div>
+</div>
+
+<!-- Add Trip Form -->
+<div class="form-card">
+  <div class="form-title"><span>➕</span> إضافة رحلة جديدة</div>
+  <div class="form-row">
+    <label>اسم / رقم الطلب (اختياري)</label>
+    <input type="text" id="tripName" placeholder="مثل: طلب #1 أو اسم العميل">
+  </div>
+  <div class="form-row">
+    <label>التطبيق</label>
+    <div class="app-types">
+      <button class="app-btn uber active" onclick="selectApp('uber', this)">
+        <span class="app-icon">⚫</span> Uber
+      </button>
+      <button class="app-btn bolt" onclick="selectApp('bolt', this)">
+        <span class="app-icon">🟢</span> Bolt
+      </button>
+      <button class="app-btn indrive" onclick="selectApp('indrive', this)">
+        <span class="app-icon">🔵</span> inDrive
+      </button>
+      <button class="app-btn kayaan" onclick="selectApp('kayaan', this)">
+        <span class="app-icon">🟠</span> كيان
+      </button>
+    </div>
+  </div>
+  <div class="form-row">
+    <label>مبلغ الرحلة (ريال)</label>
+    <input type="number" id="tripAmount" placeholder="0.00" min="0" step="0.5">
+  </div>
+  <div class="form-row">
+    <label>طريقة الدفع</label>
+    <div class="payment-types">
+      <button class="pt-btn cash active" onclick="selectPayment('cash', this)">
+        <span class="pt-icon">💵</span> كاش
+      </button>
+      <button class="pt-btn card" onclick="selectPayment('card', this)">
+        <span class="pt-icon">💳</span> بطاقة
+      </button>
+      <button class="pt-btn app" onclick="selectPayment('app', this)">
+        <span class="pt-icon">📱</span> تطبيق
+      </button>
+    </div>
+  </div>
+  <button class="add-btn" onclick="addTrip()">تسجيل الرحلة ✓</button>
+</div>
+
+<!-- Trips List -->
+<div class="trips-section">
+  <div class="section-header">
+    <div class="section-title">رحلات اليوم</div>
+    <button class="clear-btn" onclick="clearAll()">مسح الكل</button>
+  </div>
+  <div id="tripsList"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let selectedPayment = 'cash';
+let selectedApp = 'uber';
+let trips = [];
+
+// Init date
+const dateInput = document.getElementById('dateInput');
+const today = new Date().toISOString().split('T')[0];
+dateInput.value = today;
+
+// Load from localStorage
+function storageKey() { return 'kasher_' + dateInput.value; }
+function loadTrips() {
+  const saved = localStorage.getItem(storageKey());
+  trips = saved ? JSON.parse(saved) : [];
+  render();
+}
+function saveTrips() {
+  localStorage.setItem(storageKey(), JSON.stringify(trips));
+}
+
+dateInput.addEventListener('change', loadTrips);
+
+function selectPayment(type, btn) {
+  selectedPayment = type;
+  document.querySelectorAll('.pt-btn').forEach(b => {
+    b.classList.remove('active');
+  });
+  btn.classList.add('active');
+}
+
+function selectApp(app, btn) {
+  selectedApp = app;
+  document.querySelectorAll('.app-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function addTrip() {
+  const name = document.getElementById('tripName').value.trim();
+  const amount = parseFloat(document.getElementById('tripAmount').value);
+  if (!amount || amount <= 0) { showToast('أدخل مبلغ صحيح ✕'); return; }
+
+  const tripNum = trips.length + 1;
+  trips.unshift({
+    id: Date.now(),
+    num: tripNum,
+    name: name || `رحلة #${tripNum}`,
+    amount,
+    payment: selectedPayment,
+    app: selectedApp,
+    time: new Date().toLocaleTimeString('ar-SA', {hour:'2-digit', minute:'2-digit'})
+  });
+
+  // Renumber
+  trips.forEach((t, i) => t.num = trips.length - i);
+
+  saveTrips();
+  render();
+
+  document.getElementById('tripName').value = '';
+  document.getElementById('tripAmount').value = '';
+  showToast('✓ تمت إضافة الرحلة');
+}
+
+function deleteTrip(id) {
+  trips = trips.filter(t => t.id !== id);
+  trips.forEach((t, i) => t.num = trips.length - i);
+  saveTrips();
+  render();
+}
+
+function clearAll() {
+  if (trips.length === 0) return;
+  if (confirm('هل تريد مسح كل رحلات هذا اليوم؟')) {
+    trips = [];
+    saveTrips();
+    render();
+    showToast('تم مسح الكل');
+  }
+}
+
+const payLabels = { cash: 'كاش 💵', card: 'بطاقة 💳', app: 'تطبيق 📱' };
+const appLabels = { uber: '⚫ Uber', bolt: '🟢 Bolt', indrive: '🔵 inDrive', kayaan: '🟠 كيان' };
+
+function render() {
+  // Calc totals
+  let total = 0, cashT = 0, cardT = 0, appT = 0;
+  trips.forEach(t => {
+    total += t.amount;
+    if (t.payment === 'cash') cashT += t.amount;
+    else if (t.payment === 'card') cardT += t.amount;
+    else appT += t.amount;
+  });
+  const avg = trips.length ? (total / trips.length).toFixed(1) : 0;
+
+  document.getElementById('totalAmount').textContent = total.toFixed(1);
+  document.getElementById('totalTrips').textContent = trips.length;
+  document.getElementById('avgTrip').textContent = avg;
+  document.getElementById('cashTotal').textContent = cashT.toFixed(1);
+
+  document.getElementById('cashAmt').textContent = cashT.toFixed(1) + ' ر';
+  document.getElementById('cardAmt').textContent = cardT.toFixed(1) + ' ر';
+  document.getElementById('appAmt').textContent = appT.toFixed(1) + ' ر';
+
+  const maxBar = Math.max(cashT, cardT, appT, 1);
+  document.getElementById('cashBar').style.width = (cashT / maxBar * 100) + '%';
+  document.getElementById('cardBar').style.width = (cardT / maxBar * 100) + '%';
+  document.getElementById('appBar').style.width = (appT / maxBar * 100) + '%';
+
+  // List
+  const list = document.getElementById('tripsList');
+  if (trips.length === 0) {
+    list.innerHTML = `<div class="empty-state"><div class="empty-icon">🚗</div>لا توجد رحلات بعد<br>أضف أول رحلة!</div>`;
+    return;
+  }
+  list.innerHTML = trips.map(t => `
+    <div class="trip-item ${t.payment}">
+      <div class="trip-left">
+        <div class="trip-num">#${t.num}</div>
+        <div class="trip-info">
+          <div class="trip-name">${t.name}</div>
+          <div class="trip-pay-badge">${payLabels[t.payment]} · ${appLabels[t.app] || t.app} · ${t.time}</div>
+        </div>
+      </div>
+      <div class="trip-right">
+        <div class="trip-amount">${t.amount.toFixed(1)}</div>
+        <button class="del-btn" onclick="deleteTrip(${t.id})">✕</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+loadTrips();
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  });
+}
+</script>
+</body>
+</html>
