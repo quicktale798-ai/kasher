@@ -6,766 +6,404 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="كاشر">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#00d084">
+<meta name="theme-color" content="#0ea5e9">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>كاشر - تتبع دخلك اليومي</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0a0a0f;
-    --surface: #13131a;
-    --card: #1a1a26;
-    --border: #2a2a3d;
-    --accent: #00d084;
-    --accent2: #7c5cfc;
-    --cash: #f4c53d;
-    --card-color: #00b4d8;
-    --app-color: #00d084;
-    --text: #e8e8f0;
-    --muted: #7070a0;
-    --danger: #ff4d6d;
-  }
+:root {
+  --bg:#060d18; --bg2:#080f1e; --surface:#0a1525; --card:#0b1a2e; --card2:#0f2035;
+  --border:#0f2035; --border2:#1a3a5c;
+  --b1:#0ea5e9; --b2:#38bdf8; --b3:#7dd3fc; --b4:#e0f2fe;
+  --b-dim:rgba(14,165,233,0.1); --b-glow:rgba(14,165,233,0.3);
+  --cash:#f59e0b; --card-pay:#38bdf8; --app-pay:#34d399;
+  --km:#34d399; --text:#cce6f8; --muted:#334e68; --danger:#f43f5e;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:'IBM Plex Sans Arabic',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:0 0 120px;
+  background-image:radial-gradient(ellipse 70% 45% at 50% -5%,rgba(14,165,233,0.14) 0%,transparent 65%);}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+.header{text-align:center;padding:44px 20px 28px;position:relative;}
+.header::after{content:'';position:absolute;bottom:0;left:15%;right:15%;height:1px;background:linear-gradient(90deg,transparent,var(--border2),transparent);}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--b-dim);border:1px solid rgba(14,165,233,0.3);border-radius:20px;padding:5px 16px;font-size:10px;letter-spacing:3px;color:var(--b3);text-transform:uppercase;margin-bottom:16px;}
+.chip-dot{width:5px;height:5px;border-radius:50%;background:var(--b2);box-shadow:0 0 6px var(--b2);}
+.header h1{font-size:38px;font-weight:800;letter-spacing:-2px;line-height:1;margin-bottom:8px;background:linear-gradient(135deg,var(--b4) 0%,var(--b3) 40%,var(--b1) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.header-sub{color:var(--muted);font-size:12px;}
 
-  body {
-    font-family: 'IBM Plex Sans Arabic', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    padding: 20px 16px 100px;
-  }
+.date-bar{display:flex;align-items:center;justify-content:center;gap:10px;padding:22px 16px 0;margin-bottom:18px;}
+.date-bar input[type="date"]{background:var(--card);border:1px solid var(--border2);color:var(--text);font-family:inherit;font-size:13px;padding:10px 16px;border-radius:14px;outline:none;cursor:pointer;flex:1;max-width:210px;transition:border-color 0.2s;}
+.date-bar input:focus{border-color:var(--b2);}
+.hist-btn{background:var(--card);border:1px solid var(--border2);color:var(--b3);width:42px;height:42px;border-radius:14px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.hist-btn:active{background:var(--b-dim);border-color:var(--b2);}
 
-  /* Header */
-  .header {
-    text-align: center;
-    padding: 28px 0 24px;
-    position: relative;
-  }
-  .logo {
-    font-size: 11px;
-    letter-spacing: 4px;
-    color: var(--accent);
-    text-transform: uppercase;
-    margin-bottom: 8px;
-    opacity: 0.8;
-  }
-  .header h1 {
-    font-size: 32px;
-    font-weight: 700;
-    letter-spacing: -1px;
-    background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  .header-sub {
-    color: var(--muted);
-    font-size: 13px;
-    margin-top: 6px;
-  }
+.hero-card{margin:0 16px 14px;background:linear-gradient(145deg,var(--card),var(--card2));border:1px solid var(--border2);border-radius:24px;padding:22px 18px;position:relative;overflow:hidden;}
+.hero-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--b2),transparent);}
+.hero-card::after{content:'';position:absolute;top:-70px;right:-40px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(14,165,233,0.12) 0%,transparent 70%);pointer-events:none;}
+.hero-label{font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
+.hero-amount{font-size:52px;font-weight:800;letter-spacing:-3px;line-height:1;margin-bottom:4px;background:linear-gradient(135deg,#fff 0%,var(--b3) 55%,var(--b1) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-unit{font-size:12px;color:var(--muted);margin-bottom:20px;}
+.hero-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border2);border-radius:14px;overflow:hidden;}
+.hstat{background:var(--card2);padding:12px 8px;text-align:center;}
+.hstat-val{font-size:18px;font-weight:700;color:var(--b3);}
+.hstat-lbl{font-size:9px;color:var(--muted);margin-top:3px;}
 
-  /* Date selector */
-  .date-bar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    margin-bottom: 24px;
-  }
-  .date-bar input[type="date"] {
-    background: var(--card);
-    border: 1px solid var(--border);
-    color: var(--text);
-    font-family: inherit;
-    font-size: 14px;
-    padding: 8px 16px;
-    border-radius: 10px;
-    outline: none;
-    cursor: pointer;
-  }
-  .date-label {
-    color: var(--muted);
-    font-size: 13px;
-  }
+.km-banner{margin:0 16px 14px;background:linear-gradient(135deg,rgba(52,211,153,0.1),rgba(52,211,153,0.04));border:1px solid rgba(52,211,153,0.2);border-radius:16px;padding:13px 16px;display:flex;align-items:center;justify-content:space-between;}
+.km-left{display:flex;align-items:center;gap:12px;}
+.km-icon{width:38px;height:38px;background:rgba(52,211,153,0.12);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.km-label{font-size:9px;color:var(--muted);letter-spacing:1px;margin-bottom:2px;}
+.km-value{font-size:22px;font-weight:800;color:var(--km);}
+.km-unit{font-size:11px;color:var(--muted);}
 
-  /* Summary cards */
-  .summary {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 20px;
-  }
-  .sum-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 16px;
-    position: relative;
-    overflow: hidden;
-  }
-  .sum-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    border-radius: 2px 2px 0 0;
-  }
-  .sum-card.total::before { background: var(--accent); }
-  .sum-card.trips::before { background: var(--accent2); }
-  .sum-card.avg::before   { background: var(--cash); }
-  .sum-card.cash-s::before{ background: var(--card-color); }
+.breakdown{margin:0 16px 14px;background:var(--card);border:1px solid var(--border2);border-radius:20px;padding:16px;}
+.sec-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--border);}
+.bp-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.bp-row:last-child{margin-bottom:0;}
+.bp-ico{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.bp-ico.cash{background:rgba(245,158,11,0.12);}
+.bp-ico.card{background:rgba(56,189,248,0.12);}
+.bp-ico.app{background:rgba(52,211,153,0.12);}
+.bp-info{flex:1;}
+.bp-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
+.bp-name{font-size:12px;font-weight:500;}
+.bp-amt{font-size:12px;font-weight:700;}
+.bp-amt.cash{color:var(--cash);}
+.bp-amt.card{color:var(--card-pay);}
+.bp-amt.app{color:var(--app-pay);}
+.bp-track{height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+.bp-fill{height:100%;border-radius:2px;transition:width 0.6s cubic-bezier(0.4,0,0.2,1);}
+.bp-fill.cash{background:linear-gradient(90deg,#92400e,var(--cash));}
+.bp-fill.card{background:linear-gradient(90deg,#0369a1,var(--card-pay));}
+.bp-fill.app{background:linear-gradient(90deg,#065f46,var(--app-pay));}
 
-  .sum-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
-  .sum-value { font-size: 26px; font-weight: 700; line-height: 1; }
-  .sum-card.total .sum-value { color: var(--accent); }
-  .sum-card.trips .sum-value { color: var(--accent2); }
-  .sum-card.avg   .sum-value { color: var(--cash); }
-  .sum-card.cash-s .sum-value { color: var(--card-color); }
-  .sum-unit { font-size: 12px; color: var(--muted); margin-top: 4px; }
+.form-wrap{margin:0 16px 14px;background:var(--card);border:1px solid var(--border2);border-radius:24px;padding:20px;}
+.form-head{font-size:14px;font-weight:700;color:var(--b3);margin-bottom:6px;display:flex;align-items:center;gap:8px;}
+.fhead-ico{width:28px;height:28px;background:var(--b-dim);border:1px solid rgba(14,165,233,0.25);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;}
 
-  /* Payment breakdown */
-  .breakdown {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 16px;
-    margin-bottom: 20px;
-  }
-  .breakdown-title {
-    font-size: 12px;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 14px;
-  }
-  .breakdown-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  .breakdown-row:last-child { margin-bottom: 0; }
-  .bp-label { display: flex; align-items: center; gap: 8px; font-size: 14px; }
-  .bp-dot {
-    width: 8px; height: 8px; border-radius: 50%;
-  }
-  .bp-dot.cash { background: var(--cash); }
-  .bp-dot.card { background: var(--card-color); }
-  .bp-dot.app  { background: var(--app-color); }
-  .bp-amount { font-size: 14px; font-weight: 600; }
-  .bp-bar-wrap {
-    height: 4px;
-    background: var(--border);
-    border-radius: 2px;
-    margin-top: 4px;
-    overflow: hidden;
-  }
-  .bp-bar { height: 100%; border-radius: 2px; transition: width 0.5s ease; }
+/* trip number badge in form */
+.trip-num-preview{display:inline-flex;align-items:center;gap:8px;background:var(--bg2);border:1px solid var(--border2);border-radius:10px;padding:7px 14px;margin-bottom:18px;}
+.tnp-label{font-size:11px;color:var(--muted);}
+.tnp-val{font-size:15px;font-weight:800;color:var(--b2);}
 
-  /* Add trip form */
-  .form-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 20px;
-    margin-bottom: 20px;
-  }
-  .form-title {
-    font-size: 15px;
-    font-weight: 600;
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .form-title span { font-size: 18px; }
+.frow{margin-bottom:14px;}
+.frow label{display:block;font-size:10px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:7px;}
+.frow input{width:100%;background:var(--bg2);border:1px solid var(--border2);color:var(--text);font-family:inherit;font-size:15px;padding:13px 15px;border-radius:14px;outline:none;transition:border-color 0.2s,box-shadow 0.2s;}
+.frow input:focus{border-color:var(--b2);box-shadow:0 0 0 3px rgba(14,165,233,0.1);}
+.frow input::placeholder{color:var(--muted);}
+.frow-2col{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 
-  .form-row { margin-bottom: 14px; }
-  .form-row label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; letter-spacing: 0.5px; }
-  .form-row input {
-    width: 100%;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    color: var(--text);
-    font-family: inherit;
-    font-size: 15px;
-    padding: 12px 14px;
-    border-radius: 12px;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .form-row input:focus { border-color: var(--accent); }
-  .form-row input::placeholder { color: var(--muted); }
+.app-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;}
+.app-btn{background:var(--bg2);border:1.5px solid var(--border2);color:var(--muted);font-family:inherit;font-size:10px;padding:10px 2px 8px;border-radius:13px;cursor:pointer;transition:all 0.2s;text-align:center;font-weight:700;line-height:1.4;}
+.app-btn .aico{font-size:20px;display:block;margin-bottom:3px;}
+.app-btn.active.uber{background:rgba(255,255,255,0.06);border-color:#fff;color:#fff;}
+.app-btn.active.bolt{background:rgba(52,211,153,0.1);border-color:#34d399;color:#34d399;}
+.app-btn.active.indrive{background:rgba(56,189,248,0.1);border-color:#38bdf8;color:#38bdf8;}
+.app-btn.active.kayaan{background:rgba(251,146,60,0.1);border-color:#fb923c;color:#fb923c;}
 
-  .payment-types {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 8px;
-  }
-  .pt-btn {
-    background: var(--surface);
-    border: 1.5px solid var(--border);
-    color: var(--muted);
-    font-family: inherit;
-    font-size: 13px;
-    padding: 10px 4px;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-align: center;
-    font-weight: 500;
-  }
-  .pt-btn .pt-icon { font-size: 20px; display: block; margin-bottom: 3px; }
-  .pt-btn.active.cash  { background: rgba(244,197,61,0.15); border-color: var(--cash); color: var(--cash); }
-  .pt-btn.active.card  { background: rgba(0,180,216,0.15); border-color: var(--card-color); color: var(--card-color); }
-  .pt-btn.active.app   { background: rgba(0,208,132,0.15); border-color: var(--app-color); color: var(--app-color); }
+.pay-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.pt-btn{background:var(--bg2);border:1.5px solid var(--border2);color:var(--muted);font-family:inherit;font-size:12px;padding:11px 4px;border-radius:14px;cursor:pointer;transition:all 0.2s;text-align:center;font-weight:700;}
+.pt-btn .pico{font-size:20px;display:block;margin-bottom:4px;}
+.pt-btn.active.cash{background:rgba(245,158,11,0.1);border-color:var(--cash);color:var(--cash);}
+.pt-btn.active.card{background:rgba(56,189,248,0.1);border-color:var(--card-pay);color:var(--card-pay);}
+.pt-btn.active.app{background:rgba(52,211,153,0.1);border-color:var(--app-pay);color:var(--app-pay);}
 
-  /* App selector */
-  .app-types {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    gap: 6px;
-  }
-  .app-btn {
-    background: var(--surface);
-    border: 1.5px solid var(--border);
-    color: var(--muted);
-    font-family: inherit;
-    font-size: 11px;
-    padding: 8px 2px;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-align: center;
-    font-weight: 600;
-    line-height: 1.3;
-  }
-  .app-btn .app-icon { font-size: 18px; display: block; margin-bottom: 2px; }
-  .app-btn.active.uber   { background: rgba(0,0,0,0.4); border-color: #ffffff; color: #ffffff; }
-  .app-btn.active.bolt   { background: rgba(52,211,153,0.15); border-color: #34d399; color: #34d399; }
-  .app-btn.active.indrive{ background: rgba(96,165,250,0.15); border-color: #60a5fa; color: #60a5fa; }
-  .app-btn.active.kayaan { background: rgba(251,146,60,0.15); border-color: #fb923c; color: #fb923c; }
+.submit-btn{width:100%;margin-top:8px;padding:16px;border:none;border-radius:16px;background:linear-gradient(135deg,#0369a1,var(--b1));color:#fff;font-family:inherit;font-size:15px;font-weight:800;letter-spacing:0.5px;cursor:pointer;box-shadow:0 6px 22px rgba(14,165,233,0.35);transition:opacity 0.2s,transform 0.15s;}
+.submit-btn:active{transform:scale(0.98);opacity:0.85;}
 
-  .add-btn {
-    width: 100%;
-    background: var(--accent);
-    color: #000;
-    font-family: inherit;
-    font-size: 15px;
-    font-weight: 700;
-    padding: 14px;
-    border: none;
-    border-radius: 14px;
-    cursor: pointer;
-    margin-top: 4px;
-    transition: opacity 0.2s, transform 0.1s;
-    letter-spacing: 0.5px;
-  }
-  .add-btn:active { transform: scale(0.98); opacity: 0.9; }
+.list-wrap{padding:0 16px;}
+.list-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.list-title{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;}
+.clear-btn{background:transparent;border:1px solid var(--border2);color:var(--muted);font-family:inherit;font-size:11px;padding:6px 14px;border-radius:10px;cursor:pointer;}
+.clear-btn:active{border-color:var(--danger);color:var(--danger);}
 
-  /* Trips list */
-  .trips-section { margin-bottom: 20px; }
-  .section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
-  }
-  .section-title { font-size: 14px; font-weight: 600; }
-  .clear-btn {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    font-family: inherit;
-    font-size: 12px;
-    padding: 5px 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .clear-btn:hover { border-color: var(--danger); color: var(--danger); }
+.trip-card{background:var(--card);border:1px solid var(--border2);border-radius:18px;padding:14px 16px;margin-bottom:9px;display:flex;justify-content:space-between;align-items:center;position:relative;overflow:hidden;animation:fadeIn 0.3s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:none;}}
+.trip-card::before{content:'';position:absolute;right:0;top:12px;bottom:12px;width:3px;border-radius:3px;}
+.trip-card.cash::before{background:var(--cash);}
+.trip-card.card::before{background:var(--card-pay);}
+.trip-card.app::before{background:var(--app-pay);}
+.trip-left{display:flex;align-items:center;gap:12px;}
+.trip-badge{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;}
+.trip-card.cash .trip-badge{background:rgba(245,158,11,0.12);color:var(--cash);}
+.trip-card.card .trip-badge{background:rgba(56,189,248,0.12);color:var(--card-pay);}
+.trip-card.app  .trip-badge{background:rgba(52,211,153,0.12);color:var(--app-pay);}
+.trip-name{font-size:13px;font-weight:600;margin-bottom:3px;}
+.trip-meta{font-size:10px;color:var(--muted);line-height:1.7;}
+.trip-right{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.trip-amount{font-size:19px;font-weight:800;}
+.trip-card.cash .trip-amount{color:var(--cash);}
+.trip-card.card .trip-amount{color:var(--card-pay);}
+.trip-card.app  .trip-amount{color:var(--app-pay);}
+.del-btn{background:transparent;border:1px solid var(--border);color:var(--muted);width:28px;height:28px;border-radius:8px;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;}
+.del-btn:active{border-color:var(--danger);color:var(--danger);}
+.empty-state{text-align:center;padding:44px 20px;color:var(--muted);font-size:13px;}
+.empty-icon{font-size:46px;margin-bottom:12px;opacity:0.25;display:block;}
 
-  .trip-item {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 14px 16px;
-    margin-bottom: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    animation: slideIn 0.3s ease;
-    position: relative;
-    overflow: hidden;
-  }
-  @keyframes slideIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  .trip-item::after {
-    content: '';
-    position: absolute;
-    right: 0; top: 0; bottom: 0;
-    width: 3px;
-    border-radius: 0 14px 14px 0;
-  }
-  .trip-item.cash::after  { background: var(--cash); }
-  .trip-item.card::after  { background: var(--card-color); }
-  .trip-item.app::after   { background: var(--app-color); }
+.toast{position:fixed;bottom:34px;left:50%;transform:translateX(-50%) translateY(90px);background:linear-gradient(135deg,#0369a1,var(--b1));color:#fff;font-weight:800;font-size:13px;padding:12px 24px;border-radius:22px;transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1);z-index:999;white-space:nowrap;box-shadow:0 6px 24px rgba(14,165,233,0.45);}
+.toast.show{transform:translateX(-50%) translateY(0);}
 
-  .trip-left { display: flex; align-items: center; gap: 10px; }
-  .trip-num {
-    width: 30px; height: 30px;
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 12px; font-weight: 700;
-  }
-  .trip-item.cash  .trip-num { background: rgba(244,197,61,0.15); color: var(--cash); }
-  .trip-item.card  .trip-num { background: rgba(0,180,216,0.15); color: var(--card-color); }
-  .trip-item.app   .trip-num { background: rgba(0,208,132,0.15); color: var(--app-color); }
-
-  .trip-info { }
-  .trip-name { font-size: 13px; font-weight: 600; }
-  .trip-pay-badge {
-    font-size: 11px;
-    margin-top: 2px;
-    opacity: 0.7;
-  }
-  .trip-item.cash  .trip-pay-badge { color: var(--cash); }
-  .trip-item.card  .trip-pay-badge { color: var(--card-color); }
-  .trip-item.app   .trip-pay-badge { color: var(--app-color); }
-
-  .trip-right { display: flex; align-items: center; gap: 12px; }
-  .trip-amount { font-size: 17px; font-weight: 700; }
-  .trip-item.cash  .trip-amount { color: var(--cash); }
-  .trip-item.card  .trip-amount { color: var(--card-color); }
-  .trip-item.app   .trip-amount { color: var(--app-color); }
-
-  .del-btn {
-    background: transparent;
-    border: none;
-    color: var(--muted);
-    font-size: 16px;
-    cursor: pointer;
-    padding: 4px;
-    transition: color 0.2s;
-    line-height: 1;
-  }
-  .del-btn:hover { color: var(--danger); }
-
-  .empty-state {
-    text-align: center;
-    padding: 32px;
-    color: var(--muted);
-    font-size: 14px;
-  }
-  .empty-state .empty-icon { font-size: 40px; margin-bottom: 10px; }
-
-  /* Toast */
-  .toast {
-    position: fixed;
-    bottom: 24px; left: 50%;
-    transform: translateX(-50%) translateY(80px);
-    background: var(--accent);
-    color: #000;
-    font-weight: 600;
-    font-size: 13px;
-    padding: 10px 20px;
-    border-radius: 20px;
-    transition: transform 0.3s ease;
-    z-index: 999;
-    white-space: nowrap;
-  }
-  .toast.show { transform: translateX(-50%) translateY(0); }
-
-  /* History button */
-  .hist-btn {
-    background: var(--card);
-    border: 1px solid var(--border);
-    color: var(--accent);
-    font-family: inherit;
-    font-size: 18px;
-    width: 38px; height: 38px;
-    border-radius: 10px;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.2s;
-    flex-shrink: 0;
-  }
-  .hist-btn:hover { background: rgba(0,208,132,0.1); border-color: var(--accent); }
-
-  .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.75);
-    z-index: 100;
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-  }
-  .modal-overlay.open { display: flex; align-items: flex-end; }
-  .modal {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 24px 24px 0 0;
-    width: 100%;
-    max-height: 85vh;
-    overflow-y: auto;
-    padding: 20px 16px 40px;
-    animation: slideUp 0.3s ease;
-  }
-  @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-  .modal-handle { width: 40px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 20px; }
-  .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-  .modal-title { font-size: 17px; font-weight: 700; }
-  .modal-close { background: var(--card); border: 1px solid var(--border); color: var(--muted); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; }
-  .grand-total { background: linear-gradient(135deg, rgba(0,208,132,0.15), rgba(124,92,252,0.1)); border: 1px solid rgba(0,208,132,0.3); border-radius: 16px; padding: 16px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
-  .gt-left {}
-  .gt-label { font-size: 13px; color: var(--muted); }
-  .gt-value { font-size: 28px; font-weight: 800; color: var(--accent); }
-  .gt-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
-  .hist-day { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 14px 16px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: border-color 0.2s; }
-  .hist-day:hover { border-color: var(--accent); }
-  .hd-date { font-size: 14px; font-weight: 600; }
-  .hd-trips { font-size: 12px; color: var(--muted); margin-top: 3px; }
-  .hd-amount { font-size: 18px; font-weight: 700; color: var(--accent); }
-  .hist-empty { text-align: center; color: var(--muted); padding: 30px; font-size: 14px; }
-
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(2,6,15,0.88);z-index:200;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);}
+.modal-overlay.open{display:flex;align-items:flex-end;}
+.modal{background:var(--surface);border:1px solid var(--border2);border-top:1px solid rgba(14,165,233,0.35);border-radius:28px 28px 0 0;width:100%;max-height:88vh;overflow-y:auto;padding:14px 16px 50px;animation:slideUp 0.35s cubic-bezier(0.34,1.2,0.64,1);}
+@keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.modal-handle{width:36px;height:4px;background:var(--border2);border-radius:2px;margin:0 auto 20px;}
+.modal-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.modal-title{font-size:16px;font-weight:800;color:var(--b3);}
+.modal-close{background:var(--card);border:1px solid var(--border2);color:var(--muted);width:32px;height:32px;border-radius:9px;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;}
+.grand-banner{background:linear-gradient(145deg,rgba(14,165,233,0.12),rgba(14,165,233,0.04));border:1px solid rgba(14,165,233,0.25);border-radius:20px;padding:20px;margin-bottom:20px;position:relative;overflow:hidden;}
+.grand-banner::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--b2),transparent);}
+.gb-top{display:flex;justify-content:space-between;align-items:flex-start;}
+.gb-label{font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
+.gb-value{font-size:34px;font-weight:800;letter-spacing:-1px;background:linear-gradient(135deg,var(--b4),var(--b2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.gb-icon{font-size:32px;opacity:0.4;}
+.gb-sub{font-size:11px;color:var(--muted);margin-top:10px;line-height:1.8;}
+.hist-row{background:var(--card);border:1px solid var(--border2);border-radius:16px;padding:14px 16px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;}
+.hist-row:active{border-color:var(--b2);}
+.hr-date{font-size:13px;font-weight:700;margin-bottom:3px;}
+.hr-meta{font-size:11px;color:var(--muted);}
+.hr-amount{font-size:17px;font-weight:800;color:var(--b3);}
+.hist-empty{text-align:center;color:var(--muted);padding:32px;font-size:13px;}
 </style>
 </head>
 <body>
 
 <div class="header">
-  <div class="logo">كاشر · Kasher</div>
-  <h1>تتبع دخلك اليومي</h1>
-  <div class="header-sub">سجّل رحلاتك وتابع أرباحك بسهولة</div>
+  <div class="chip"><span class="chip-dot"></span> كاشر · Kasher <span class="chip-dot"></span></div>
+  <h1>سجّل دخلك</h1>
+  <div class="header-sub">تتبّع رحلاتك اليومية بدقة</div>
 </div>
 
-<!-- Date -->
 <div class="date-bar">
-  <span class="date-label">📅 التاريخ:</span>
   <input type="date" id="dateInput">
-  <button class="hist-btn" onclick="openHistory()" title="السجل الكامل">💾</button>
+  <button class="hist-btn" onclick="openHistory()">📊</button>
 </div>
 
-<!-- History Modal -->
-<div class="modal-overlay" id="histModal" onclick="closeHistoryOutside(event)">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-header">
-      <div class="modal-title">📊 سجل جميع الأيام</div>
-      <button class="modal-close" onclick="closeHistory()">✕</button>
-    </div>
-    <div class="grand-total">
-      <div class="gt-left">
-        <div class="gt-label">إجمالي الكل</div>
-        <div class="gt-value" id="grandTotal">0 ر</div>
-        <div class="gt-sub" id="grandDays">0 يوم · 0 رحلة</div>
-      </div>
-      <div style="font-size:36px">💰</div>
-    </div>
-    <div id="histList"></div>
+<div class="hero-card">
+  <div class="hero-label">إجمالي اليوم</div>
+  <div class="hero-amount" id="totalAmount">0.0</div>
+  <div class="hero-unit">ريال سعودي</div>
+  <div class="hero-stats">
+    <div class="hstat"><div class="hstat-val" id="totalTrips">0</div><div class="hstat-lbl">رحلة</div></div>
+    <div class="hstat"><div class="hstat-val" id="avgTrip">0</div><div class="hstat-lbl">متوسط / رحلة</div></div>
+    <div class="hstat"><div class="hstat-val" id="cashTotal">0</div><div class="hstat-lbl">نقدي</div></div>
   </div>
 </div>
 
-<!-- Summary -->
-<div class="summary">
-  <div class="sum-card total">
-    <div class="sum-label">إجمالي اليوم</div>
-    <div class="sum-value" id="totalAmount">0</div>
-    <div class="sum-unit">ريال سعودي</div>
+<div class="km-banner">
+  <div class="km-left">
+    <div class="km-icon">🛣️</div>
+    <div><div class="km-label">مسافة اليوم</div><div class="km-value" id="kmTotal">0.0</div></div>
   </div>
-  <div class="sum-card trips">
-    <div class="sum-label">عدد الرحلات</div>
-    <div class="sum-value" id="totalTrips">0</div>
-    <div class="sum-unit">رحلة</div>
-  </div>
-  <div class="sum-card avg">
-    <div class="sum-label">متوسط الرحلة</div>
-    <div class="sum-value" id="avgTrip">0</div>
-    <div class="sum-unit">ريال / رحلة</div>
-  </div>
-  <div class="sum-card cash-s">
-    <div class="sum-label">نقدي اليوم</div>
-    <div class="sum-value" id="cashTotal">0</div>
-    <div class="sum-unit">ريال</div>
-  </div>
+  <div class="km-unit">كيلومتر</div>
 </div>
 
-<!-- Payment breakdown -->
 <div class="breakdown">
-  <div class="breakdown-title">توزيع طرق الدفع</div>
-  <div class="breakdown-row">
-    <div class="bp-label"><span class="bp-dot cash"></span> كاش</div>
-    <div class="bp-amount" id="cashAmt" style="color:var(--cash)">0 ر</div>
+  <div class="sec-label">توزيع الدفع</div>
+  <div class="bp-row">
+    <div class="bp-ico cash">💵</div>
+    <div class="bp-info"><div class="bp-top"><span class="bp-name">كاش</span><span class="bp-amt cash" id="cashAmt">0 ر</span></div><div class="bp-track"><div class="bp-fill cash" id="cashBar" style="width:0%"></div></div></div>
   </div>
-  <div class="bp-bar-wrap"><div class="bp-bar" id="cashBar" style="background:var(--cash);width:0%"></div></div>
-  <div class="breakdown-row" style="margin-top:10px">
-    <div class="bp-label"><span class="bp-dot card"></span> بطاقة</div>
-    <div class="bp-amount" id="cardAmt" style="color:var(--card-color)">0 ر</div>
+  <div class="bp-row">
+    <div class="bp-ico card">💳</div>
+    <div class="bp-info"><div class="bp-top"><span class="bp-name">بطاقة</span><span class="bp-amt card" id="cardAmt">0 ر</span></div><div class="bp-track"><div class="bp-fill card" id="cardBar" style="width:0%"></div></div></div>
   </div>
-  <div class="bp-bar-wrap"><div class="bp-bar" id="cardBar" style="background:var(--card-color);width:0%"></div></div>
-  <div class="breakdown-row" style="margin-top:10px">
-    <div class="bp-label"><span class="bp-dot app"></span> تطبيق</div>
-    <div class="bp-amount" id="appAmt" style="color:var(--app-color)">0 ر</div>
+  <div class="bp-row">
+    <div class="bp-ico app">📱</div>
+    <div class="bp-info"><div class="bp-top"><span class="bp-name">تطبيق</span><span class="bp-amt app" id="appAmt">0 ر</span></div><div class="bp-track"><div class="bp-fill app" id="appBar" style="width:0%"></div></div></div>
   </div>
-  <div class="bp-bar-wrap"><div class="bp-bar" id="appBar" style="background:var(--app-color);width:0%"></div></div>
 </div>
 
-<!-- Add Trip Form -->
-<div class="form-card">
-  <div class="form-title"><span>➕</span> إضافة رحلة جديدة</div>
-  <div class="form-row">
-    <label>اسم / رقم الطلب (اختياري)</label>
-    <input type="text" id="tripName" placeholder="مثل: طلب #1 أو اسم العميل">
+<div class="form-wrap">
+  <div class="form-head">
+    <div class="fhead-ico">✚</div>
+    إضافة رحلة جديدة
   </div>
-  <div class="form-row">
+
+  <!-- رقم الرحلة التلقائي -->
+  <div class="trip-num-preview">
+    <span class="tnp-label">رقم الرحلة التالية:</span>
+    <span class="tnp-val" id="nextTripNum">#1</span>
+  </div>
+
+  <div class="frow">
     <label>التطبيق</label>
-    <div class="app-types">
-      <button class="app-btn uber active" onclick="selectApp('uber', this)">
-        <span class="app-icon">⚫</span> Uber
-      </button>
-      <button class="app-btn bolt" onclick="selectApp('bolt', this)">
-        <span class="app-icon">🟢</span> Bolt
-      </button>
-      <button class="app-btn indrive" onclick="selectApp('indrive', this)">
-        <span class="app-icon">🔵</span> inDrive
-      </button>
-      <button class="app-btn kayaan" onclick="selectApp('kayaan', this)">
-        <span class="app-icon">🟠</span> كيان
-      </button>
+    <div class="app-grid">
+      <button class="app-btn uber active" onclick="selectApp('uber',this)"><span class="aico">⚫</span>Uber</button>
+      <button class="app-btn bolt" onclick="selectApp('bolt',this)"><span class="aico">🟢</span>Bolt</button>
+      <button class="app-btn indrive" onclick="selectApp('indrive',this)"><span class="aico">🔵</span>inDrive</button>
+      <button class="app-btn kayaan" onclick="selectApp('kayaan',this)"><span class="aico">🟠</span>كيان</button>
     </div>
   </div>
-  <div class="form-row">
-    <label>مبلغ الرحلة (ريال)</label>
-    <input type="number" id="tripAmount" placeholder="0.00" min="0" step="0.5">
+
+  <div class="frow-2col">
+    <div class="frow" style="margin-bottom:0"><label>المبلغ (ريال)</label><input type="number" id="tripAmount" placeholder="0.00" min="0" step="0.5"></div>
+    <div class="frow" style="margin-bottom:0"><label>الكيلومترات</label><input type="number" id="tripKm" placeholder="0.0" min="0" step="0.1"></div>
   </div>
-  <div class="form-row">
+
+  <div class="frow" style="margin-top:14px">
     <label>طريقة الدفع</label>
-    <div class="payment-types">
-      <button class="pt-btn cash active" onclick="selectPayment('cash', this)">
-        <span class="pt-icon">💵</span> كاش
-      </button>
-      <button class="pt-btn card" onclick="selectPayment('card', this)">
-        <span class="pt-icon">💳</span> بطاقة
-      </button>
-      <button class="pt-btn app" onclick="selectPayment('app', this)">
-        <span class="pt-icon">📱</span> تطبيق
-      </button>
+    <div class="pay-grid">
+      <button class="pt-btn cash active" onclick="selectPayment('cash',this)"><span class="pico">💵</span>كاش</button>
+      <button class="pt-btn card" onclick="selectPayment('card',this)"><span class="pico">💳</span>بطاقة</button>
+      <button class="pt-btn app" onclick="selectPayment('app',this)"><span class="pico">📱</span>تطبيق</button>
     </div>
   </div>
-  <button class="add-btn" onclick="addTrip()">تسجيل الرحلة ✓</button>
+
+  <button class="submit-btn" onclick="addTrip()">✓ تسجيل الرحلة</button>
 </div>
 
-<!-- Trips List -->
-<div class="trips-section">
-  <div class="section-header">
-    <div class="section-title">رحلات اليوم</div>
+<div class="list-wrap">
+  <div class="list-header">
+    <div class="list-title">رحلات اليوم</div>
     <button class="clear-btn" onclick="clearAll()">مسح الكل</button>
   </div>
   <div id="tripsList"></div>
 </div>
 
+<div class="modal-overlay" id="histModal" onclick="closeHistOutside(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-top">
+      <div class="modal-title">📊 سجل جميع الأيام</div>
+      <button class="modal-close" onclick="closeHistory()">✕</button>
+    </div>
+    <div class="grand-banner">
+      <div class="gb-top"><div><div class="gb-label">الإجمالي الكلي</div><div class="gb-value" id="grandTotal">0 ر</div></div><div class="gb-icon">💰</div></div>
+      <div class="gb-sub" id="grandSub">—</div>
+    </div>
+    <div id="histList"></div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
-let selectedPayment = 'cash';
-let selectedApp = 'uber';
-let trips = [];
+let selPay='cash', selApp='uber', trips=[];
+const dateInput=document.getElementById('dateInput');
+dateInput.value=new Date().toISOString().split('T')[0];
 
-// Init date
-const dateInput = document.getElementById('dateInput');
-const today = new Date().toISOString().split('T')[0];
-dateInput.value = today;
+function key(){return 'kasher_'+dateInput.value;}
+function load(){trips=JSON.parse(localStorage.getItem(key())||'[]');render();}
+function save(){localStorage.setItem(key(),JSON.stringify(trips));}
+dateInput.addEventListener('change',load);
 
-// Load from localStorage
-function storageKey() { return 'kasher_' + dateInput.value; }
-function loadTrips() {
-  const saved = localStorage.getItem(storageKey());
-  trips = saved ? JSON.parse(saved) : [];
-  render();
-}
-function saveTrips() {
-  localStorage.setItem(storageKey(), JSON.stringify(trips));
+function updateNextNum(){
+  document.getElementById('nextTripNum').textContent='#'+(trips.length+1);
 }
 
-dateInput.addEventListener('change', loadTrips);
+function selectPayment(t,btn){selPay=t;document.querySelectorAll('.pt-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+function selectApp(a,btn){selApp=a;document.querySelectorAll('.app-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
 
-function selectPayment(type, btn) {
-  selectedPayment = type;
-  document.querySelectorAll('.pt-btn').forEach(b => {
-    b.classList.remove('active');
+function addTrip(){
+  const amount=parseFloat(document.getElementById('tripAmount').value);
+  const km=parseFloat(document.getElementById('tripKm').value)||0;
+  if(!amount||amount<=0){showToast('أدخل مبلغ صحيح ✕');return;}
+  const num=trips.length+1;
+  trips.push({
+    id:Date.now(),
+    num,
+    name:`رحلة #${num}`,
+    amount,km,
+    payment:selPay,
+    app:selApp,
+    time:new Date().toLocaleTimeString('ar-SA',{hour:'2-digit',minute:'2-digit'})
   });
-  btn.classList.add('active');
+  save();render();
+  document.getElementById('tripAmount').value='';
+  document.getElementById('tripKm').value='';
+  showToast(`✓ تم تسجيل رحلة #${num}`);
 }
 
-function selectApp(app, btn) {
-  selectedApp = app;
-  document.querySelectorAll('.app-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
+function deleteTrip(id){
+  trips=trips.filter(t=>t.id!==id);
+  // إعادة ترقيم
+  trips.forEach((t,i)=>{ t.num=i+1; t.name=`رحلة #${i+1}`; });
+  save();render();
 }
 
-function addTrip() {
-  const name = document.getElementById('tripName').value.trim();
-  const amount = parseFloat(document.getElementById('tripAmount').value);
-  if (!amount || amount <= 0) { showToast('أدخل مبلغ صحيح ✕'); return; }
+function clearAll(){
+  if(!trips.length)return;
+  if(confirm('مسح كل رحلات هذا اليوم؟')){trips=[];save();render();showToast('تم المسح');}
+}
 
-  const tripNum = trips.length + 1;
-  trips.unshift({
-    id: Date.now(),
-    num: tripNum,
-    name: name || `رحلة #${tripNum}`,
-    amount,
-    payment: selectedPayment,
-    app: selectedApp,
-    time: new Date().toLocaleTimeString('ar-SA', {hour:'2-digit', minute:'2-digit'})
+const PAY={cash:'كاش 💵',card:'بطاقة 💳',app:'تطبيق 📱'};
+const APP={uber:'⚫ Uber',bolt:'🟢 Bolt',indrive:'🔵 inDrive',kayaan:'🟠 كيان'};
+
+function render(){
+  updateNextNum();
+  let total=0,cashT=0,cardT=0,appT=0,kmT=0;
+  trips.forEach(t=>{
+    total+=t.amount;kmT+=(t.km||0);
+    if(t.payment==='cash')cashT+=t.amount;
+    else if(t.payment==='card')cardT+=t.amount;
+    else appT+=t.amount;
   });
+  const avg=trips.length?(total/trips.length).toFixed(1):'0';
+  document.getElementById('totalAmount').textContent=total.toFixed(1);
+  document.getElementById('totalTrips').textContent=trips.length;
+  document.getElementById('avgTrip').textContent=avg;
+  document.getElementById('cashTotal').textContent=cashT.toFixed(1);
+  document.getElementById('kmTotal').textContent=kmT.toFixed(1);
+  document.getElementById('cashAmt').textContent=cashT.toFixed(1)+' ر';
+  document.getElementById('cardAmt').textContent=cardT.toFixed(1)+' ر';
+  document.getElementById('appAmt').textContent=appT.toFixed(1)+' ر';
+  const mx=Math.max(cashT,cardT,appT,1);
+  document.getElementById('cashBar').style.width=(cashT/mx*100)+'%';
+  document.getElementById('cardBar').style.width=(cardT/mx*100)+'%';
+  document.getElementById('appBar').style.width=(appT/mx*100)+'%';
 
-  // Renumber
-  trips.forEach((t, i) => t.num = trips.length - i);
-
-  saveTrips();
-  render();
-
-  document.getElementById('tripName').value = '';
-  document.getElementById('tripAmount').value = '';
-  showToast('✓ تمت إضافة الرحلة');
-}
-
-function deleteTrip(id) {
-  trips = trips.filter(t => t.id !== id);
-  trips.forEach((t, i) => t.num = trips.length - i);
-  saveTrips();
-  render();
-}
-
-function clearAll() {
-  if (trips.length === 0) return;
-  if (confirm('هل تريد مسح كل رحلات هذا اليوم؟')) {
-    trips = [];
-    saveTrips();
-    render();
-    showToast('تم مسح الكل');
-  }
-}
-
-const payLabels = { cash: 'كاش 💵', card: 'بطاقة 💳', app: 'تطبيق 📱' };
-const appLabels = { uber: '⚫ Uber', bolt: '🟢 Bolt', indrive: '🔵 inDrive', kayaan: '🟠 كيان' };
-
-function render() {
-  // Calc totals
-  let total = 0, cashT = 0, cardT = 0, appT = 0;
-  trips.forEach(t => {
-    total += t.amount;
-    if (t.payment === 'cash') cashT += t.amount;
-    else if (t.payment === 'card') cardT += t.amount;
-    else appT += t.amount;
-  });
-  const avg = trips.length ? (total / trips.length).toFixed(1) : 0;
-
-  document.getElementById('totalAmount').textContent = total.toFixed(1);
-  document.getElementById('totalTrips').textContent = trips.length;
-  document.getElementById('avgTrip').textContent = avg;
-  document.getElementById('cashTotal').textContent = cashT.toFixed(1);
-
-  document.getElementById('cashAmt').textContent = cashT.toFixed(1) + ' ر';
-  document.getElementById('cardAmt').textContent = cardT.toFixed(1) + ' ر';
-  document.getElementById('appAmt').textContent = appT.toFixed(1) + ' ر';
-
-  const maxBar = Math.max(cashT, cardT, appT, 1);
-  document.getElementById('cashBar').style.width = (cashT / maxBar * 100) + '%';
-  document.getElementById('cardBar').style.width = (cardT / maxBar * 100) + '%';
-  document.getElementById('appBar').style.width = (appT / maxBar * 100) + '%';
-
-  // List
-  const list = document.getElementById('tripsList');
-  if (trips.length === 0) {
-    list.innerHTML = `<div class="empty-state"><div class="empty-icon">🚗</div>لا توجد رحلات بعد<br>أضف أول رحلة!</div>`;
+  const list=document.getElementById('tripsList');
+  if(!trips.length){
+    list.innerHTML='<div class="empty-state"><span class="empty-icon">🚗</span>لا توجد رحلات بعد<br>أضف أول رحلة!</div>';
     return;
   }
-  list.innerHTML = trips.map(t => `
-    <div class="trip-item ${t.payment}">
+  // عرض من الأحدث للأقدم
+  list.innerHTML=[...trips].reverse().map(t=>`
+    <div class="trip-card ${t.payment}">
       <div class="trip-left">
-        <div class="trip-num">#${t.num}</div>
-        <div class="trip-info">
+        <div class="trip-badge">#${t.num}</div>
+        <div>
           <div class="trip-name">${t.name}</div>
-          <div class="trip-pay-badge">${payLabels[t.payment]} · ${appLabels[t.app] || t.app} · ${t.time}</div>
+          <div class="trip-meta">${PAY[t.payment]} · ${APP[t.app]||t.app}${t.km?' · 🛣️ '+t.km+' كم':''}<br>${t.time}</div>
         </div>
       </div>
       <div class="trip-right">
         <div class="trip-amount">${t.amount.toFixed(1)}</div>
         <button class="del-btn" onclick="deleteTrip(${t.id})">✕</button>
       </div>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
 
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2200);
-}
-
-
-function openHistory() {
-  const keys = Object.keys(localStorage)
-    .filter(k => k.startsWith('kasher_'))
-    .sort().reverse();
-
-  let grandTotal = 0, grandTrips = 0;
-  const rows = keys.map(k => {
-    const dateStr = k.replace('kasher_', '');
-    const dayTrips = JSON.parse(localStorage.getItem(k) || '[]');
-    const dayTotal = dayTrips.reduce((s, t) => s + t.amount, 0);
-    grandTotal += dayTotal;
-    grandTrips += dayTrips.length;
-    const d = new Date(dateStr);
-    const label = d.toLocaleDateString('ar-SA', {weekday:'short', year:'numeric', month:'short', day:'numeric'});
-    return `<div class="hist-day" onclick="goToDay('${dateStr}')">
-      <div>
-        <div class="hd-date">${label}</div>
-        <div class="hd-trips">${dayTrips.length} رحلة</div>
-      </div>
-      <div class="hd-amount">${dayTotal.toFixed(1)} ر</div>
-    </div>`;
+function openHistory(){
+  const keys=Object.keys(localStorage).filter(k=>k.startsWith('kasher_')).sort().reverse();
+  let gTotal=0,gTrips=0,gKm=0;
+  const rows=keys.map(k=>{
+    const d=k.replace('kasher_','');
+    const ts=JSON.parse(localStorage.getItem(k)||'[]');
+    const dt=ts.reduce((s,t)=>s+t.amount,0);
+    const dk=ts.reduce((s,t)=>s+(t.km||0),0);
+    gTotal+=dt;gTrips+=ts.length;gKm+=dk;
+    const label=new Date(d).toLocaleDateString('ar-SA',{weekday:'short',month:'short',day:'numeric'});
+    return `<div class="hist-row" onclick="goToDay('${d}')">
+      <div><div class="hr-date">${label}</div><div class="hr-meta">${ts.length} رحلة${dk?' · 🛣️ '+dk.toFixed(1)+' كم':''}</div></div>
+      <div class="hr-amount">${dt.toFixed(1)} ر</div></div>`;
   });
-
-  document.getElementById('grandTotal').textContent = grandTotal.toFixed(1) + ' ر';
-  document.getElementById('grandDays').textContent = keys.length + ' يوم · ' + grandTrips + ' رحلة';
-  document.getElementById('histList').innerHTML = rows.length
-    ? rows.join('')
-    : '<div class="hist-empty">لا يوجد سجل بعد</div>';
+  document.getElementById('grandTotal').textContent=gTotal.toFixed(1)+' ر';
+  document.getElementById('grandSub').innerHTML=`${keys.length} يوم &nbsp;·&nbsp; ${gTrips} رحلة &nbsp;·&nbsp; 🛣️ ${gKm.toFixed(1)} كم`;
+  document.getElementById('histList').innerHTML=rows.length?rows.join(''):'<div class="hist-empty">لا يوجد سجل بعد</div>';
   document.getElementById('histModal').classList.add('open');
 }
+function closeHistory(){document.getElementById('histModal').classList.remove('open');}
+function closeHistOutside(e){if(e.target===document.getElementById('histModal'))closeHistory();}
+function goToDay(d){dateInput.value=d;load();closeHistory();}
+function showToast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2200);}
 
-function closeHistory() {
-  document.getElementById('histModal').classList.remove('open');
-}
-
-function closeHistoryOutside(e) {
-  if (e.target === document.getElementById('histModal')) closeHistory();
-}
-
-function goToDay(dateStr) {
-  dateInput.value = dateStr;
-  loadTrips();
-  closeHistory();
-}
-
-loadTrips();
+load();
 </script>
-
 <script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch(() => {});
-  });
-}
+if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js').catch(()=>{});});}
 </script>
 </body>
 </html>
