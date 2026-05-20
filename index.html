@@ -14,313 +14,196 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg:     #12111a;
-  --card:   #1e1d2a;
-  --card2:  #252436;
-  --border: #2e2d40;
-  --purple: #6c63ff;
-  --purpleL:#8b84ff;
-  --cash:   #f5a623;
-  --cardp:  #4fc3f7;
-  --appp:   #4caf82;
-  --km:     #e879a0;
-  --green:  #4caf82;
-  --text:   #f0eeff;
-  --sub:    #7e7c99;
-  --danger: #f44;
+  --bg:#12111a; --card:#1e1d2a; --card2:#252436; --border:#2e2d40;
+  --purple:#6c63ff; --purpleL:#8b84ff;
+  --cash:#f5a623; --cardp:#4fc3f7; --appp:#4caf82;
+  --green:#4caf82; --red:#f44; --redL:#ff6b6b; --redDim:rgba(255,68,68,0.1);
+  --km:#e879a0; --text:#f0eeff; --sub:#7e7c99;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 body{font-family:'IBM Plex Sans Arabic',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:100px;}
 
-/* ── TOP BAR ── */
-.topbar{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:18px 18px 12px;
-}
-.topbar-right{}
-.topbar-date{font-size:12px;color:var(--sub);text-align:right;}
-.topbar-title{font-size:22px;font-weight:800;text-align:right;color:var(--text);}
-.topbar-left{display:flex;gap:8px;align-items:center;}
-.tb-btn{
-  display:flex;align-items:center;gap:5px;
-  background:var(--card);border:1px solid var(--border);
-  border-radius:20px;padding:7px 14px;font-family:inherit;
-  font-size:13px;font-weight:700;color:var(--text);cursor:pointer;
-}
+/* TOP BAR */
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:18px 16px 12px;}
+.topbar-date{font-size:11px;color:var(--sub);text-align:right;}
+.topbar-title{font-size:22px;font-weight:800;text-align:right;}
+.topbar-left{display:flex;gap:7px;align-items:center;}
+.tb-btn{display:flex;align-items:center;gap:5px;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:7px 13px;font-family:inherit;font-size:12px;font-weight:700;color:var(--text);cursor:pointer;}
 .tb-btn.purple{background:var(--purple);border-color:var(--purple);color:#fff;}
-.tb-icon{font-size:16px;}
 
-/* ── STATS GRID ── */
-.stats-grid{
-  display:grid;grid-template-columns:1fr 1fr;
-  gap:10px;padding:0 14px;margin-bottom:14px;
-}
-.stat-card{
-  background:var(--card);border-radius:18px;
-  padding:16px 14px;display:flex;
-  justify-content:space-between;align-items:center;
-}
-.stat-val{font-size:28px;font-weight:800;line-height:1;}
+/* STATS GRID */
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 14px;margin-bottom:12px;}
+.stat-card{background:var(--card);border-radius:18px;padding:14px 13px;display:flex;justify-content:space-between;align-items:center;}
+.stat-val{font-size:24px;font-weight:800;line-height:1;}
 .stat-val.gold{color:var(--cash);}
 .stat-val.blue{color:var(--cardp);}
 .stat-val.green{color:var(--green);}
 .stat-val.purple{color:var(--purpleL);}
 .stat-val.pink{color:var(--km);}
-.stat-lbl{font-size:11px;color:var(--sub);margin-top:5px;}
-.stat-ico{
-  width:42px;height:42px;border-radius:12px;
-  display:flex;align-items:center;justify-content:center;font-size:20px;
-}
-.stat-ico.gold-bg{background:rgba(245,166,35,0.15);}
-.stat-ico.blue-bg{background:rgba(79,195,247,0.15);}
-.stat-ico.green-bg{background:rgba(76,175,130,0.15);}
-.stat-ico.purple-bg{background:rgba(108,99,255,0.15);}
-.stat-ico.pink-bg{background:rgba(232,121,160,0.15);}
+.stat-val.red{color:var(--redL);}
+.stat-val.white{color:#fff;}
+.stat-lbl{font-size:10px;color:var(--sub);margin-top:4px;}
+.stat-ico{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:19px;}
 
-/* wide stat (full row) */
-.stat-card.wide{grid-column:1/-1;}
+/* NET CARD full width */
+.net-card{
+  margin:0 14px 12px;border-radius:20px;padding:16px 18px;
+  display:flex;justify-content:space-between;align-items:center;
+  position:relative;overflow:hidden;
+}
+.net-card.positive{background:linear-gradient(135deg,rgba(76,175,130,0.18),rgba(76,175,130,0.06));border:1px solid rgba(76,175,130,0.3);}
+.net-card.negative{background:linear-gradient(135deg,rgba(255,68,68,0.18),rgba(255,68,68,0.06));border:1px solid rgba(255,68,68,0.3);}
+.net-card.zero{background:var(--card);border:1px solid var(--border);}
+.net-left{}
+.net-label{font-size:10px;color:var(--sub);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;}
+.net-val{font-size:36px;font-weight:800;letter-spacing:-1px;}
+.net-card.positive .net-val{color:var(--green);}
+.net-card.negative .net-val{color:var(--redL);}
+.net-card.zero .net-val{color:var(--sub);}
+.net-sub{font-size:11px;color:var(--sub);margin-top:5px;}
+.net-ico{font-size:36px;opacity:0.35;}
 
-/* ── TOTALS ICON ROW ── */
-.totals-btn{
-  margin:0 14px 14px;
-  background:var(--card);border:1px solid var(--border);
-  border-radius:18px;padding:14px 16px;
-  display:flex;align-items:center;justify-content:space-between;
-  cursor:pointer;transition:border-color 0.2s;
-}
-.totals-btn:active{border-color:var(--purple);}
-.totals-left{display:flex;align-items:center;gap:12px;}
-.totals-ico{
-  width:44px;height:44px;background:rgba(108,99,255,0.15);
-  border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:22px;
-}
-.totals-label{font-size:14px;font-weight:700;color:var(--text);}
-.totals-sub{font-size:11px;color:var(--sub);margin-top:2px;}
-.totals-arrow{font-size:14px;color:var(--sub);}
-.totals-pills{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;}
-.tpill{
-  display:flex;align-items:center;gap:5px;
-  border-radius:20px;padding:5px 11px;font-size:12px;font-weight:700;
-}
-.tpill.cash{background:rgba(245,166,35,0.12);color:var(--cash);}
-.tpill.card{background:rgba(79,195,247,0.12);color:var(--cardp);}
-.tpill.app{background:rgba(76,175,130,0.12);color:var(--appp);}
+/* TABS */
+.tabs{display:flex;gap:6px;padding:0 14px;margin-bottom:12px;}
+.tab{flex:1;padding:10px;border-radius:14px;border:1.5px solid var(--border);background:var(--card);font-family:inherit;font-size:13px;font-weight:700;color:var(--sub);cursor:pointer;text-align:center;transition:all 0.2s;}
+.tab.active.income{background:rgba(108,99,255,0.15);border-color:var(--purple);color:var(--purpleL);}
+.tab.active.expense{background:var(--redDim);border-color:var(--redL);color:var(--redL);}
 
-/* ── DATE STRIP ── */
-.date-strip-wrap{padding:0 14px;margin-bottom:14px;}
-.date-strip-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
-.ds-title{font-size:16px;font-weight:800;}
-.ds-hist{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:12px;padding:6px 14px;font-size:12px;
-  font-weight:700;color:var(--purpleL);cursor:pointer;font-family:inherit;
-}
-.date-strip{display:flex;gap:7px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;}
+/* DATE STRIP */
+.date-strip-wrap{padding:0 14px;margin-bottom:12px;}
+.date-strip-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;}
+.ds-title{font-size:15px;font-weight:800;}
+.ds-hist{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:6px 13px;font-size:12px;font-weight:700;color:var(--purpleL);cursor:pointer;font-family:inherit;}
+.date-strip{display:flex;gap:7px;overflow-x:auto;padding-bottom:3px;scrollbar-width:none;}
 .date-strip::-webkit-scrollbar{display:none;}
-.day-chip{
-  flex-shrink:0;background:var(--card);border-radius:14px;
-  padding:10px 10px 8px;text-align:center;min-width:52px;cursor:pointer;
-  transition:all 0.2s;border:1.5px solid transparent;
-}
+.day-chip{flex-shrink:0;background:var(--card);border-radius:14px;padding:9px 9px 7px;text-align:center;min-width:50px;cursor:pointer;transition:all 0.2s;border:1.5px solid transparent;}
 .day-chip.active{background:var(--purple);border-color:var(--purpleL);}
-.day-chip.has-data{border-color:rgba(108,99,255,0.4);}
-.day-name{font-size:10px;color:var(--sub);margin-bottom:4px;}
+.day-chip.has-data{border-color:rgba(108,99,255,0.35);}
+.day-name{font-size:9px;color:var(--sub);margin-bottom:3px;}
 .day-chip.active .day-name{color:rgba(255,255,255,0.7);}
-.day-num{font-size:18px;font-weight:800;}
+.day-num{font-size:17px;font-weight:800;}
 .day-chip.active .day-num{color:#fff;}
-.day-dot{width:5px;height:5px;border-radius:50%;background:var(--purpleL);margin:4px auto 0;opacity:0;}
+.day-dot{width:5px;height:5px;border-radius:50%;background:var(--purpleL);margin:3px auto 0;opacity:0;}
 .day-chip.has-data .day-dot{opacity:1;}
 .day-chip.active .day-dot{background:rgba(255,255,255,0.6);}
 
-/* ── SECTION CARD ── */
-.section-card{
-  margin:0 14px 14px;
-  background:var(--card);border-radius:20px;overflow:hidden;
-}
-.section-head{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:14px 16px;border-bottom:1px solid var(--border);
-}
-.sh-left{display:flex;align-items:center;gap:10px;}
-.sh-ico{font-size:18px;}
+/* SECTION CARD */
+.section-card{margin:0 14px 12px;background:var(--card);border-radius:20px;overflow:hidden;}
+.section-head{display:flex;justify-content:space-between;align-items:center;padding:13px 15px;border-bottom:1px solid var(--border);}
+.sh-left{display:flex;align-items:center;gap:9px;}
+.sh-ico{font-size:17px;}
 .sh-title{font-size:15px;font-weight:800;}
-.sh-badge{
-  background:var(--purple);border-radius:20px;
-  padding:3px 10px;font-size:12px;font-weight:700;color:#fff;
-}
+.sh-badge{border-radius:20px;padding:3px 10px;font-size:12px;font-weight:700;color:#fff;}
+.sh-badge.purple{background:var(--purple);}
+.sh-badge.red{background:var(--red);}
 .sh-date{font-size:12px;color:var(--sub);}
 
-/* ── FORM INSIDE SECTION ── */
-.form-body{padding:16px;}
-.next-num{
-  display:inline-flex;align-items:center;gap:8px;
-  background:var(--card2);border:1px solid var(--border);
-  border-radius:12px;padding:8px 14px;margin-bottom:14px;
-}
-.nn-lbl{font-size:12px;color:var(--sub);}
-.nn-val{font-size:16px;font-weight:800;color:var(--purpleL);}
-
+/* FORM */
+.form-body{padding:15px;}
 .flabel{font-size:10px;color:var(--sub);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:7px;}
-.frow{margin-bottom:14px;}
-.finput{
-  width:100%;background:var(--card2);border:1.5px solid var(--border);
-  color:var(--text);font-family:inherit;font-size:16px;
-  padding:13px 15px;border-radius:14px;outline:none;transition:border-color 0.2s,box-shadow 0.2s;
-}
+.frow{margin-bottom:13px;}
+.finput{width:100%;background:var(--card2);border:1.5px solid var(--border);color:var(--text);font-family:inherit;font-size:15px;padding:12px 14px;border-radius:13px;outline:none;transition:border-color 0.2s,box-shadow 0.2s;}
 .finput:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(108,99,255,0.12);}
+.finput.red-focus:focus{border-color:var(--redL);box-shadow:0 0 0 3px rgba(255,68,68,0.1);}
 .finput::placeholder{color:var(--sub);}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:13px;}
 
-.app-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:14px;}
-.app-btn{
-  background:var(--card2);border:1.5px solid var(--border);
-  color:var(--sub);font-family:inherit;font-size:10px;font-weight:700;
-  padding:10px 2px 8px;border-radius:13px;cursor:pointer;
-  text-align:center;line-height:1.4;transition:all 0.2s;
-}
-.app-btn .aico{font-size:20px;display:block;margin-bottom:3px;}
+.app-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:13px;}
+.app-btn{background:var(--card2);border:1.5px solid var(--border);color:var(--sub);font-family:inherit;font-size:10px;font-weight:700;padding:9px 2px 7px;border-radius:12px;cursor:pointer;text-align:center;line-height:1.4;transition:all 0.2s;}
+.app-btn .aico{font-size:19px;display:block;margin-bottom:2px;}
 .app-btn.active.uber{background:rgba(255,255,255,0.07);border-color:#fff;color:#fff;}
 .app-btn.active.bolt{background:rgba(76,175,130,0.12);border-color:var(--appp);color:var(--appp);}
 .app-btn.active.indrive{background:rgba(79,195,247,0.12);border-color:var(--cardp);color:var(--cardp);}
 .app-btn.active.kayaan{background:rgba(251,146,60,0.12);border-color:#fb923c;color:#fb923c;}
 
-.pay-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;}
-.pt-btn{
-  background:var(--card2);border:1.5px solid var(--border);
-  color:var(--sub);font-family:inherit;font-size:12px;font-weight:700;
-  padding:11px 4px;border-radius:14px;cursor:pointer;text-align:center;transition:all 0.2s;
-}
-.pt-btn .pico{font-size:20px;display:block;margin-bottom:4px;}
+.pay-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:14px;}
+.pt-btn{background:var(--card2);border:1.5px solid var(--border);color:var(--sub);font-family:inherit;font-size:12px;font-weight:700;padding:10px 4px;border-radius:13px;cursor:pointer;text-align:center;transition:all 0.2s;}
+.pt-btn .pico{font-size:19px;display:block;margin-bottom:3px;}
 .pt-btn.active.cash{background:rgba(245,166,35,0.12);border-color:var(--cash);color:var(--cash);}
 .pt-btn.active.card{background:rgba(79,195,247,0.12);border-color:var(--cardp);color:var(--cardp);}
 .pt-btn.active.app{background:rgba(76,175,130,0.12);border-color:var(--appp);color:var(--appp);}
 
-.submit-btn{
-  width:100%;padding:16px;border:none;border-radius:16px;
-  background:var(--purple);color:#fff;font-family:inherit;
-  font-size:15px;font-weight:800;cursor:pointer;
-  box-shadow:0 6px 20px rgba(108,99,255,0.35);
-  transition:opacity 0.2s,transform 0.15s;
-}
+/* expense categories */
+.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:13px;}
+.cat-btn{background:var(--card2);border:1.5px solid var(--border);color:var(--sub);font-family:inherit;font-size:9px;font-weight:700;padding:9px 2px 7px;border-radius:12px;cursor:pointer;text-align:center;line-height:1.4;transition:all 0.2s;}
+.cat-btn .cico{font-size:19px;display:block;margin-bottom:2px;}
+.cat-btn.active{background:var(--redDim);border-color:var(--redL);color:var(--redL);}
+
+.submit-btn{width:100%;padding:15px;border:none;border-radius:15px;font-family:inherit;font-size:15px;font-weight:800;cursor:pointer;transition:opacity 0.2s,transform 0.15s;}
+.submit-btn.purple{background:var(--purple);color:#fff;box-shadow:0 5px 18px rgba(108,99,255,0.35);}
+.submit-btn.red{background:var(--red);color:#fff;box-shadow:0 5px 18px rgba(255,68,68,0.3);}
 .submit-btn:active{transform:scale(0.98);opacity:0.85;}
 
-/* ── TRIP LIST ── */
-.trips-body{padding:10px 12px 14px;}
-.trip-row{
-  background:var(--card2);border-radius:16px;
-  padding:13px 14px;margin-bottom:8px;
-  display:flex;justify-content:space-between;align-items:center;
-  position:relative;overflow:hidden;animation:fadeIn 0.3s ease;
-}
+/* ROWS */
+.rows-body{padding:10px 12px 12px;}
+.item-row{background:var(--card2);border-radius:15px;padding:12px 13px;margin-bottom:7px;display:flex;justify-content:space-between;align-items:center;position:relative;overflow:hidden;animation:fadeIn 0.3s ease;}
 @keyframes fadeIn{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:none;}}
-.trip-row::after{content:'';position:absolute;right:0;top:10px;bottom:10px;width:3px;border-radius:3px;}
-.trip-row.cash::after{background:var(--cash);}
-.trip-row.card::after{background:var(--cardp);}
-.trip-row.app::after{background:var(--appp);}
-.tr-left{display:flex;align-items:center;gap:11px;}
-.tr-badge{
-  width:36px;height:36px;border-radius:10px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:12px;font-weight:800;flex-shrink:0;
-}
-.trip-row.cash .tr-badge{background:rgba(245,166,35,0.12);color:var(--cash);}
-.trip-row.card .tr-badge{background:rgba(79,195,247,0.12);color:var(--cardp);}
-.trip-row.app  .tr-badge{background:rgba(76,175,130,0.12);color:var(--appp);}
-.tr-name{font-size:13px;font-weight:700;margin-bottom:3px;}
-.tr-meta{font-size:10px;color:var(--sub);line-height:1.6;}
-.tr-right{display:flex;align-items:center;gap:9px;flex-shrink:0;}
-.tr-amount{font-size:19px;font-weight:800;}
-.trip-row.cash .tr-amount{color:var(--cash);}
-.trip-row.card .tr-amount{color:var(--cardp);}
-.trip-row.app  .tr-amount{color:var(--appp);}
-.del-btn{
-  background:transparent;border:1px solid var(--border);
-  color:var(--sub);width:28px;height:28px;border-radius:8px;
-  cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;
-}
-.del-btn:active{border-color:var(--danger);color:var(--danger);}
-.empty-box{text-align:center;padding:36px 20px;color:var(--sub);font-size:13px;}
-.empty-ico{font-size:44px;margin-bottom:12px;opacity:0.25;display:block;}
+.item-row::after{content:'';position:absolute;right:0;top:10px;bottom:10px;width:3px;border-radius:3px;}
+.item-row.income-row.cash::after{background:var(--cash);}
+.item-row.income-row.card::after{background:var(--cardp);}
+.item-row.income-row.app::after{background:var(--appp);}
+.item-row.expense-row::after{background:var(--redL);}
+.ir-left{display:flex;align-items:center;gap:10px;}
+.ir-badge{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;}
+.income-row.cash .ir-badge{background:rgba(245,166,35,0.12);color:var(--cash);}
+.income-row.card .ir-badge{background:rgba(79,195,247,0.12);color:var(--cardp);}
+.income-row.app  .ir-badge{background:rgba(76,175,130,0.12);color:var(--appp);}
+.expense-row .ir-badge{background:var(--redDim);color:var(--redL);}
+.ir-name{font-size:12px;font-weight:700;margin-bottom:2px;}
+.ir-meta{font-size:10px;color:var(--sub);line-height:1.5;}
+.ir-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.ir-amount{font-size:18px;font-weight:800;}
+.income-row.cash .ir-amount{color:var(--cash);}
+.income-row.card .ir-amount{color:var(--cardp);}
+.income-row.app  .ir-amount{color:var(--appp);}
+.expense-row .ir-amount{color:var(--redL);}
+.expense-row .ir-amount::before{content:'−';}
+.del-btn{background:transparent;border:1px solid var(--border);color:var(--sub);width:27px;height:27px;border-radius:7px;cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center;}
+.del-btn:active{border-color:var(--red);color:var(--red);}
+.empty-box{text-align:center;padding:32px 20px;color:var(--sub);font-size:12px;}
+.empty-ico{font-size:40px;margin-bottom:10px;opacity:0.2;display:block;}
 
-.list-footer{
-  display:flex;justify-content:flex-end;padding:0 14px 2px;
-}
-.clear-btn{
-  background:transparent;border:1px solid var(--border);
-  color:var(--sub);font-family:inherit;font-size:11px;
-  padding:5px 14px;border-radius:10px;cursor:pointer;
-}
-.clear-btn:active{border-color:var(--danger);color:var(--danger);}
+.list-footer{display:flex;justify-content:flex-end;padding:0 14px 4px;}
+.clear-btn{background:transparent;border:1px solid var(--border);color:var(--sub);font-family:inherit;font-size:11px;padding:5px 13px;border-radius:9px;cursor:pointer;}
+.clear-btn:active{border-color:var(--red);color:var(--red);}
 
-/* ── TOAST ── */
-.toast{
-  position:fixed;bottom:32px;left:50%;
-  transform:translateX(-50%) translateY(80px);
-  background:var(--purple);color:#fff;font-weight:800;font-size:13px;
-  padding:11px 22px;border-radius:22px;
-  transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
-  z-index:999;white-space:nowrap;
-  box-shadow:0 6px 20px rgba(108,99,255,0.45);
-}
+/* TOAST */
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--purple);color:#fff;font-weight:800;font-size:13px;padding:11px 22px;border-radius:22px;transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);z-index:999;white-space:nowrap;box-shadow:0 6px 20px rgba(108,99,255,0.45);}
 .toast.show{transform:translateX(-50%) translateY(0);}
 
-/* ── MODALS ── */
-.overlay{
-  display:none;position:fixed;inset:0;
-  background:rgba(0,0,0,0.75);z-index:200;
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-}
+/* SHEETS */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.78);z-index:200;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);}
 .overlay.open{display:flex;align-items:flex-end;}
-.sheet{
-  background:#1a192a;border:1px solid var(--border);
-  border-top:1px solid var(--purple);
-  border-radius:26px 26px 0 0;width:100%;
-  max-height:88vh;overflow-y:auto;
-  padding:12px 16px 48px;
-  animation:slideUp 0.35s cubic-bezier(0.34,1.2,0.64,1);
-}
+.sheet{background:#1a192a;border:1px solid var(--border);border-top:1px solid var(--purple);border-radius:26px 26px 0 0;width:100%;max-height:88vh;overflow-y:auto;padding:12px 16px 48px;animation:slideUp 0.35s cubic-bezier(0.34,1.2,0.64,1);}
 @keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
 .sheet-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 18px;}
-.sheet-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;}
+.sheet-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
 .sheet-title{font-size:17px;font-weight:800;}
-.sheet-close{
-  background:var(--card);border:1px solid var(--border);
-  color:var(--sub);width:32px;height:32px;border-radius:9px;
-  cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;
-}
+.sheet-close{background:var(--card);border:1px solid var(--border);color:var(--sub);width:32px;height:32px;border-radius:9px;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;}
 
-/* totals sheet */
-.pay-total-card{
-  background:var(--card);border-radius:18px;padding:18px;margin-bottom:12px;
-  display:flex;align-items:center;gap:14px;
-}
-.ptc-ico{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:22px;}
+.pay-total-card{background:var(--card);border-radius:17px;padding:16px;margin-bottom:10px;display:flex;align-items:center;gap:13px;}
+.ptc-ico{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:21px;}
 .ptc-info{flex:1;}
-.ptc-label{font-size:12px;color:var(--sub);margin-bottom:4px;}
-.ptc-val{font-size:26px;font-weight:800;}
-.ptc-sub{font-size:11px;color:var(--sub);margin-top:3px;}
+.ptc-label{font-size:11px;color:var(--sub);margin-bottom:3px;}
+.ptc-val{font-size:24px;font-weight:800;}
+.ptc-sub{font-size:11px;color:var(--sub);margin-top:2px;}
+.sec-divider{font-size:10px;color:var(--sub);text-transform:uppercase;letter-spacing:2px;margin:14px 0 10px;}
 
-/* history sheet */
-.grand-card{
-  background:var(--card);border:1px solid rgba(108,99,255,0.3);
-  border-radius:18px;padding:18px;margin-bottom:14px;
-  position:relative;overflow:hidden;
-}
-.grand-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,var(--purpleL),transparent);}
-.gc-label{font-size:10px;color:var(--sub);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
-.gc-val{font-size:36px;font-weight:800;color:var(--purpleL);letter-spacing:-1px;}
+.grand-card{background:var(--card);border:1px solid rgba(108,99,255,0.3);border-radius:18px;padding:18px;margin-bottom:12px;position:relative;overflow:hidden;}
+.grand-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--purpleL),transparent);}
+.gc-label{font-size:10px;color:var(--sub);letter-spacing:2px;text-transform:uppercase;margin-bottom:5px;}
+.gc-val{font-size:34px;font-weight:800;color:var(--purpleL);letter-spacing:-1px;}
 .gc-sub{font-size:11px;color:var(--sub);margin-top:8px;line-height:1.8;}
-.hist-row{
-  background:var(--card);border:1px solid var(--border);border-radius:16px;
-  padding:14px 16px;margin-bottom:8px;
-  display:flex;justify-content:space-between;align-items:center;cursor:pointer;
-}
+.hist-row{background:var(--card);border:1px solid var(--border);border-radius:15px;padding:13px 15px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;}
 .hist-row:active{border-color:var(--purple);}
 .hr-date{font-size:13px;font-weight:700;margin-bottom:3px;}
 .hr-meta{font-size:11px;color:var(--sub);}
-.hr-amt{font-size:17px;font-weight:800;color:var(--purpleL);}
-.hist-empty{text-align:center;color:var(--sub);padding:32px;font-size:13px;}
+.hr-right{text-align:left;}
+.hr-income{font-size:15px;font-weight:800;color:var(--cash);}
+.hr-net{font-size:11px;margin-top:2px;}
+.hr-net.pos{color:var(--green);}
+.hr-net.neg{color:var(--redL);}
+.hist-empty{text-align:center;color:var(--sub);padding:30px;font-size:13px;}
 </style>
 </head>
 <body>
@@ -328,14 +211,10 @@ body{font-family:'IBM Plex Sans Arabic',sans-serif;background:var(--bg);color:va
 <!-- TOP BAR -->
 <div class="topbar">
   <div class="topbar-left">
-    <button class="tb-btn" onclick="openTotals()">
-      <span class="tb-icon">💰</span> الإجماليات
-    </button>
-    <button class="tb-btn" onclick="openHistory()">
-      <span class="tb-icon">📊</span>
-    </button>
+    <button class="tb-btn purple" onclick="openTotals()">💰 الإجماليات</button>
+    <button class="tb-btn" onclick="openHistory()">📅</button>
   </div>
-  <div class="topbar-right">
+  <div>
     <div class="topbar-date" id="topDate"></div>
     <div class="topbar-title">كاشر 🚗</div>
   </div>
@@ -344,182 +223,157 @@ body{font-family:'IBM Plex Sans Arabic',sans-serif;background:var(--bg);color:va
 <!-- STATS GRID -->
 <div class="stats-grid">
   <div class="stat-card">
-    <div>
-      <div class="stat-val gold" id="totalAmount">0</div>
-      <div class="stat-lbl">إجمالي اليوم (ر)</div>
-    </div>
-    <div class="stat-ico gold-bg">💵</div>
+    <div><div class="stat-val gold" id="s_income">0</div><div class="stat-lbl">الدخل (ر)</div></div>
+    <div class="stat-ico" style="background:rgba(245,166,35,0.12)">💵</div>
   </div>
   <div class="stat-card">
-    <div>
-      <div class="stat-val purple" id="totalTrips">0</div>
-      <div class="stat-lbl">عدد الرحلات</div>
-    </div>
-    <div class="stat-ico purple-bg">🚗</div>
+    <div><div class="stat-val red" id="s_expense">0</div><div class="stat-lbl">المصاريف (ر)</div></div>
+    <div class="stat-ico" style="background:rgba(255,68,68,0.1)">🧾</div>
   </div>
   <div class="stat-card">
-    <div>
-      <div class="stat-val blue" id="avgTrip">0</div>
-      <div class="stat-lbl">متوسط الرحلة (ر)</div>
-    </div>
-    <div class="stat-ico blue-bg">📈</div>
+    <div><div class="stat-val purple" id="s_trips">0</div><div class="stat-lbl">عدد الرحلات</div></div>
+    <div class="stat-ico" style="background:rgba(108,99,255,0.12)">🚗</div>
   </div>
   <div class="stat-card">
-    <div>
-      <div class="stat-val pink" id="kmTotal">0</div>
-      <div class="stat-lbl">الكيلومترات</div>
-    </div>
-    <div class="stat-ico pink-bg">🛣️</div>
+    <div><div class="stat-val pink" id="s_km">0</div><div class="stat-lbl">الكيلومترات</div></div>
+    <div class="stat-ico" style="background:rgba(232,121,160,0.12)">🛣️</div>
   </div>
 </div>
 
-<!-- TOTALS PILL ROW -->
-<div class="totals-btn" onclick="openTotals()">
-  <div class="totals-left">
-    <div class="totals-ico">💳</div>
-    <div>
-      <div class="totals-label">إجماليات طرق الدفع — اليوم</div>
-      <div class="totals-sub">اضغط لعرض التفاصيل الكاملة</div>
-    </div>
+<!-- NET PROFIT CARD -->
+<div class="net-card zero" id="netCard">
+  <div class="net-left">
+    <div class="net-label">صافي الربح</div>
+    <div class="net-val" id="netVal">0.0</div>
+    <div class="net-sub" id="netSub">لم تسجل بيانات بعد</div>
   </div>
-  <div class="totals-arrow">‹</div>
+  <div class="net-ico" id="netIco">📊</div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab active income" id="tab_income" onclick="switchTab('income')">🚗 الدخل</button>
+  <button class="tab expense" id="tab_expense" onclick="switchTab('expense')">🧾 المصاريف</button>
 </div>
 
 <!-- DATE STRIP -->
 <div class="date-strip-wrap">
   <div class="date-strip-top">
     <button class="ds-hist" onclick="openHistory()">📅 كل الأيام</button>
-    <div class="sh-title" style="font-size:16px;font-weight:800;">الأسبوع</div>
+    <div class="ds-title">الأسبوع</div>
   </div>
   <div class="date-strip" id="dateStrip"></div>
 </div>
 
-<!-- FORM SECTION -->
-<div class="section-card">
-  <div class="section-head">
-    <div class="sh-left">
-      <span class="sh-ico">➕</span>
-      <span class="sh-title">إضافة رحلة</span>
+<!-- INCOME FORM -->
+<div id="panel_income">
+  <div class="section-card">
+    <div class="section-head">
+      <div class="sh-left"><span class="sh-ico">➕</span><span class="sh-title">إضافة رحلة</span></div>
+      <div class="sh-badge purple" id="incBadge">#1</div>
     </div>
-    <div class="sh-badge" id="formBadge">#1</div>
-  </div>
-  <div class="form-body">
-    <div class="frow">
-      <div class="flabel">التطبيق</div>
-      <div class="app-grid">
-        <button class="app-btn uber active" onclick="selApp('uber',this)"><span class="aico">⚫</span>Uber</button>
-        <button class="app-btn bolt" onclick="selApp('bolt',this)"><span class="aico">🟢</span>Bolt</button>
-        <button class="app-btn indrive" onclick="selApp('indrive',this)"><span class="aico">🔵</span>inDrive</button>
-        <button class="app-btn kayaan" onclick="selApp('kayaan',this)"><span class="aico">🟠</span>كيان</button>
+    <div class="form-body">
+      <div class="frow">
+        <div class="flabel">التطبيق</div>
+        <div class="app-grid">
+          <button class="app-btn uber active" onclick="selApp('uber',this)"><span class="aico">⚫</span>Uber</button>
+          <button class="app-btn bolt" onclick="selApp('bolt',this)"><span class="aico">🟢</span>Bolt</button>
+          <button class="app-btn indrive" onclick="selApp('indrive',this)"><span class="aico">🔵</span>inDrive</button>
+          <button class="app-btn kayaan" onclick="selApp('kayaan',this)"><span class="aico">🟠</span>كيان</button>
+        </div>
       </div>
+      <div class="two-col">
+        <div><div class="flabel">المبلغ (ريال)</div><input class="finput" type="number" id="tripAmount" placeholder="0.00" min="0" step="0.5"></div>
+        <div><div class="flabel">الكيلومترات</div><input class="finput" type="number" id="tripKm" placeholder="0.0" min="0" step="0.1"></div>
+      </div>
+      <div class="frow">
+        <div class="flabel">طريقة الدفع</div>
+        <div class="pay-grid">
+          <button class="pt-btn cash active" onclick="selPay('cash',this)"><span class="pico">💵</span>كاش</button>
+          <button class="pt-btn card" onclick="selPay('card',this)"><span class="pico">💳</span>بطاقة</button>
+          <button class="pt-btn app" onclick="selPay('app',this)"><span class="pico">📱</span>تطبيق</button>
+        </div>
+      </div>
+      <button class="submit-btn purple" onclick="addTrip()">✓ تسجيل الرحلة</button>
     </div>
-    <div class="two-col" style="margin-bottom:14px;">
-      <div>
+  </div>
+  <div class="section-card">
+    <div class="section-head">
+      <div class="sh-left"><span class="sh-ico">🗂</span><span class="sh-title">رحلات اليوم</span></div>
+      <div class="sh-date" id="incDateLbl"></div>
+    </div>
+    <div class="rows-body" id="tripsList"></div>
+  </div>
+  <div class="list-footer"><button class="clear-btn" onclick="clearTrips()">🗑 مسح الرحلات</button></div>
+</div>
+
+<!-- EXPENSE FORM -->
+<div id="panel_expense" style="display:none">
+  <div class="section-card">
+    <div class="section-head">
+      <div class="sh-left"><span class="sh-ico">➕</span><span class="sh-title">إضافة مصروف</span></div>
+      <div class="sh-badge red" id="expBadge">#1</div>
+    </div>
+    <div class="form-body">
+      <div class="frow">
+        <div class="flabel">الفئة</div>
+        <div class="cat-grid">
+          <button class="cat-btn active" data-cat="وقود" onclick="selCat(this)"><span class="cico">⛽</span>وقود</button>
+          <button class="cat-btn" data-cat="طعام" onclick="selCat(this)"><span class="cico">🍔</span>طعام</button>
+          <button class="cat-btn" data-cat="صيانة" onclick="selCat(this)"><span class="cico">🔧</span>صيانة</button>
+          <button class="cat-btn" data-cat="غسيل" onclick="selCat(this)"><span class="cico">🚿</span>غسيل</button>
+          <button class="cat-btn" data-cat="مخالفة" onclick="selCat(this)"><span class="cico">📋</span>مخالفة</button>
+          <button class="cat-btn" data-cat="تأمين" onclick="selCat(this)"><span class="cico">🛡️</span>تأمين</button>
+          <button class="cat-btn" data-cat="إطارات" onclick="selCat(this)"><span class="cico">🛞</span>إطارات</button>
+          <button class="cat-btn" data-cat="أخرى" onclick="selCat(this)"><span class="cico">📌</span>أخرى</button>
+        </div>
+      </div>
+      <div class="frow">
         <div class="flabel">المبلغ (ريال)</div>
-        <input class="finput" type="number" id="tripAmount" placeholder="0.00" min="0" step="0.5">
+        <input class="finput red-focus" type="number" id="expAmount" placeholder="0.00" min="0" step="0.5">
       </div>
-      <div>
-        <div class="flabel">الكيلومترات</div>
-        <input class="finput" type="number" id="tripKm" placeholder="0.0" min="0" step="0.1">
+      <div class="frow">
+        <div class="flabel">ملاحظة (اختياري)</div>
+        <input class="finput red-focus" type="text" id="expNote" placeholder="مثال: تعبئة وقود كاملة">
       </div>
+      <button class="submit-btn red" onclick="addExpense()">✕ تسجيل المصروف</button>
     </div>
-    <div class="frow">
-      <div class="flabel">طريقة الدفع</div>
-      <div class="pay-grid">
-        <button class="pt-btn cash active" onclick="selPay('cash',this)"><span class="pico">💵</span>كاش</button>
-        <button class="pt-btn card" onclick="selPay('card',this)"><span class="pico">💳</span>بطاقة</button>
-        <button class="pt-btn app" onclick="selPay('app',this)"><span class="pico">📱</span>تطبيق</button>
-      </div>
-    </div>
-    <button class="submit-btn" onclick="addTrip()">✓ تسجيل الرحلة</button>
   </div>
+  <div class="section-card">
+    <div class="section-head">
+      <div class="sh-left"><span class="sh-ico">🧾</span><span class="sh-title">مصاريف اليوم</span></div>
+      <div class="sh-date" id="expDateLbl"></div>
+    </div>
+    <div class="rows-body" id="expenseList"></div>
+  </div>
+  <div class="list-footer"><button class="clear-btn" onclick="clearExpenses()">🗑 مسح المصاريف</button></div>
 </div>
 
-<!-- TRIPS LIST -->
-<div class="section-card">
-  <div class="section-head">
-    <div class="sh-left">
-      <span class="sh-ico">🗂</span>
-      <span class="sh-title">رحلات اليوم</span>
-    </div>
-    <div class="sh-date" id="listDateLabel"></div>
-  </div>
-  <div class="trips-body" id="tripsList"></div>
-</div>
-<div class="list-footer">
-  <button class="clear-btn" onclick="clearAll()">🗑 مسح الكل</button>
-</div>
-
-<!-- ── TOTALS SHEET ── -->
+<!-- TOTALS SHEET -->
 <div class="overlay" id="totalsModal" onclick="closeOut(event,'totalsModal')">
   <div class="sheet">
     <div class="sheet-handle"></div>
-    <div class="sheet-head">
-      <div class="sheet-title">💰 إجماليات طرق الدفع</div>
-      <button class="sheet-close" onclick="close1('totalsModal')">✕</button>
-    </div>
-
-    <!-- today -->
-    <div style="font-size:10px;color:var(--sub);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;">اليوم</div>
-    <div class="pay-total-card">
-      <div class="ptc-ico" style="background:rgba(245,166,35,0.12);">💵</div>
-      <div class="ptc-info">
-        <div class="ptc-label">كاش</div>
-        <div class="ptc-val" style="color:var(--cash)" id="t_cashToday">0 ر</div>
-      </div>
-    </div>
-    <div class="pay-total-card">
-      <div class="ptc-ico" style="background:rgba(79,195,247,0.12);">💳</div>
-      <div class="ptc-info">
-        <div class="ptc-label">بطاقة</div>
-        <div class="ptc-val" style="color:var(--cardp)" id="t_cardToday">0 ر</div>
-      </div>
-    </div>
-    <div class="pay-total-card">
-      <div class="ptc-ico" style="background:rgba(76,175,130,0.12);">📱</div>
-      <div class="ptc-info">
-        <div class="ptc-label">تطبيق</div>
-        <div class="ptc-val" style="color:var(--appp)" id="t_appToday">0 ر</div>
-      </div>
-    </div>
-
-    <!-- all time -->
-    <div style="font-size:10px;color:var(--sub);text-transform:uppercase;letter-spacing:2px;margin:16px 0 10px;">جميع الأيام</div>
-    <div class="pay-total-card">
-      <div class="ptc-ico" style="background:rgba(245,166,35,0.12);">💵</div>
-      <div class="ptc-info">
-        <div class="ptc-label">إجمالي كاش</div>
-        <div class="ptc-val" style="color:var(--cash)" id="t_cashAll">0 ر</div>
-        <div class="ptc-sub" id="t_cashAllSub"></div>
-      </div>
-    </div>
-    <div class="pay-total-card">
-      <div class="ptc-ico" style="background:rgba(79,195,247,0.12);">💳</div>
-      <div class="ptc-info">
-        <div class="ptc-label">إجمالي بطاقة</div>
-        <div class="ptc-val" style="color:var(--cardp)" id="t_cardAll">0 ر</div>
-        <div class="ptc-sub" id="t_cardAllSub"></div>
-      </div>
-    </div>
-    <div class="pay-total-card">
-      <div class="ptc-ico" style="background:rgba(76,175,130,0.12);">📱</div>
-      <div class="ptc-info">
-        <div class="ptc-label">إجمالي تطبيق</div>
-        <div class="ptc-val" style="color:var(--appp)" id="t_appAll">0 ر</div>
-        <div class="ptc-sub" id="t_appAllSub"></div>
-      </div>
-    </div>
+    <div class="sheet-head"><div class="sheet-title">💰 الإجماليات</div><button class="sheet-close" onclick="close1('totalsModal')">✕</button></div>
+    <div class="sec-divider">اليوم — دخل</div>
+    <div class="pay-total-card"><div class="ptc-ico" style="background:rgba(245,166,35,0.12)">💵</div><div class="ptc-info"><div class="ptc-label">كاش</div><div class="ptc-val" style="color:var(--cash)" id="tc_cashT">0 ر</div></div></div>
+    <div class="pay-total-card"><div class="ptc-ico" style="background:rgba(79,195,247,0.12)">💳</div><div class="ptc-info"><div class="ptc-label">بطاقة</div><div class="ptc-val" style="color:var(--cardp)" id="tc_cardT">0 ر</div></div></div>
+    <div class="pay-total-card"><div class="ptc-ico" style="background:rgba(76,175,130,0.12)">📱</div><div class="ptc-info"><div class="ptc-label">تطبيق</div><div class="ptc-val" style="color:var(--appp)" id="tc_appT">0 ر</div></div></div>
+    <div class="sec-divider">اليوم — مصاريف</div>
+    <div class="pay-total-card"><div class="ptc-ico" style="background:var(--redDim)">🧾</div><div class="ptc-info"><div class="ptc-label">إجمالي المصاريف</div><div class="ptc-val" style="color:var(--redL)" id="tc_expT">0 ر</div></div></div>
+    <div class="sec-divider">جميع الأيام — دخل</div>
+    <div class="pay-total-card"><div class="ptc-ico" style="background:rgba(245,166,35,0.12)">💵</div><div class="ptc-info"><div class="ptc-label">إجمالي كاش</div><div class="ptc-val" style="color:var(--cash)" id="tc_cashA">0 ر</div><div class="ptc-sub" id="tc_cashAs"></div></div></div>
+    <div class="pay-total-card"><div class="ptc-ico" style="background:rgba(79,195,247,0.12)">💳</div><div class="ptc-info"><div class="ptc-label">إجمالي بطاقة</div><div class="ptc-val" style="color:var(--cardp)" id="tc_cardA">0 ر</div><div class="ptc-sub" id="tc_cardAs"></div></div></div>
+    <div class="pay-total-card"><div class="ptc-ico" style="background:rgba(76,175,130,0.12)">📱</div><div class="ptc-info"><div class="ptc-label">إجمالي تطبيق</div><div class="ptc-val" style="color:var(--appp)" id="tc_appA">0 ر</div><div class="ptc-sub" id="tc_appAs"></div></div></div>
+    <div class="sec-divider">جميع الأيام — مصاريف</div>
+    <div class="pay-total-card"><div class="ptc-ico" style="background:var(--redDim)">🧾</div><div class="ptc-info"><div class="ptc-label">إجمالي المصاريف الكلية</div><div class="ptc-val" style="color:var(--redL)" id="tc_expA">0 ر</div><div class="ptc-sub" id="tc_expAs"></div></div></div>
   </div>
 </div>
 
-<!-- ── HISTORY SHEET ── -->
+<!-- HISTORY SHEET -->
 <div class="overlay" id="histModal" onclick="closeOut(event,'histModal')">
   <div class="sheet">
     <div class="sheet-handle"></div>
-    <div class="sheet-head">
-      <div class="sheet-title">📅 سجل جميع الأيام</div>
-      <button class="sheet-close" onclick="close1('histModal')">✕</button>
-    </div>
+    <div class="sheet-head"><div class="sheet-title">📅 سجل جميع الأيام</div><button class="sheet-close" onclick="close1('histModal')">✕</button></div>
     <div class="grand-card">
       <div class="gc-label">الإجمالي الكلي</div>
       <div class="gc-val" id="grandTotal">0 ر</div>
@@ -532,27 +386,31 @@ body{font-family:'IBM Plex Sans Arabic',sans-serif;background:var(--bg);color:va
 <div class="toast" id="toast"></div>
 
 <script>
-let curPay='cash', curApp='uber', trips=[];
-const dateInput={value:new Date().toISOString().split('T')[0]};
+let curPay='cash', curApp='uber', curCat='وقود';
+let trips=[], expenses=[];
+const dateState={value:new Date().toISOString().split('T')[0]};
 
-// date helpers
-function fmtDate(d){return new Date(d).toLocaleDateString('ar-SA',{weekday:'long',year:'numeric',month:'long',day:'numeric'});}
-function fmtShort(d){return new Date(d).toLocaleDateString('ar-SA',{month:'short',day:'numeric'});}
-
-function key(){return 'kasher_'+dateInput.value;}
-function load(){trips=JSON.parse(localStorage.getItem(key())||'[]');render();}
-function save(){localStorage.setItem(key(),JSON.stringify(trips));}
+function ikey(){return 'kasher_'+dateState.value;}
+function ekey(){return 'kasher_exp_'+dateState.value;}
+function loadDay(){
+  trips=JSON.parse(localStorage.getItem(ikey())||'[]');
+  expenses=JSON.parse(localStorage.getItem(ekey())||'[]');
+  render();
+}
+function saveI(){localStorage.setItem(ikey(),JSON.stringify(trips));}
+function saveE(){localStorage.setItem(ekey(),JSON.stringify(expenses));}
 
 // top date
 function setTopDate(){
-  const d=new Date(dateInput.value);
+  const d=new Date(dateState.value);
   const days=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
   const months=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
   document.getElementById('topDate').textContent=days[d.getDay()]+'، '+d.getDate()+' '+months[d.getMonth()]+' '+d.getFullYear();
-  document.getElementById('listDateLabel').textContent=fmtShort(dateInput.value);
+  const sh=new Date(d).toLocaleDateString('ar-SA',{month:'short',day:'numeric'});
+  document.getElementById('incDateLbl').textContent=sh;
+  document.getElementById('expDateLbl').textContent=sh;
 }
 
-// build week strip
 function buildStrip(){
   const strip=document.getElementById('dateStrip');
   const today=new Date();
@@ -561,20 +419,28 @@ function buildStrip(){
   for(let i=6;i>=0;i--){
     const d=new Date(today);d.setDate(today.getDate()-i);
     const iso=d.toISOString().split('T')[0];
-    const hasData=!!localStorage.getItem('kasher_'+iso);
-    const isActive=iso===dateInput.value;
+    const hasData=!!(localStorage.getItem('kasher_'+iso)||localStorage.getItem('kasher_exp_'+iso));
+    const isActive=iso===dateState.value;
     const chip=document.createElement('div');
     chip.className='day-chip'+(isActive?' active':'')+(hasData&&!isActive?' has-data':'');
     chip.innerHTML=`<div class="day-name">${days[d.getDay()]}</div><div class="day-num">${d.getDate()}</div><div class="day-dot"></div>`;
-    chip.onclick=()=>{dateInput.value=iso;load();buildStrip();setTopDate();};
+    chip.onclick=()=>{dateState.value=iso;loadDay();buildStrip();setTopDate();};
     strip.appendChild(chip);
   }
-  // scroll active into view
   setTimeout(()=>{const ac=strip.querySelector('.active');if(ac)ac.scrollIntoView({inline:'center',behavior:'smooth'});},50);
+}
+
+// tab switching
+function switchTab(t){
+  document.getElementById('panel_income').style.display=t==='income'?'':'none';
+  document.getElementById('panel_expense').style.display=t==='expense'?'':'none';
+  document.getElementById('tab_income').className='tab'+(t==='income'?' active income':'');
+  document.getElementById('tab_expense').className='tab'+(t==='expense'?' active expense':'');
 }
 
 function selPay(t,btn){curPay=t;document.querySelectorAll('.pt-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
 function selApp(a,btn){curApp=a;document.querySelectorAll('.app-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+function selCat(btn){curCat=btn.dataset.cat;document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
 
 function addTrip(){
   const amount=parseFloat(document.getElementById('tripAmount').value);
@@ -583,119 +449,156 @@ function addTrip(){
   const num=trips.length+1;
   trips.push({id:Date.now(),num,name:`رحلة #${num}`,amount,km,payment:curPay,app:curApp,
     time:new Date().toLocaleTimeString('ar-SA',{hour:'2-digit',minute:'2-digit'})});
-  save();render();buildStrip();
+  saveI();render();buildStrip();
   document.getElementById('tripAmount').value='';
   document.getElementById('tripKm').value='';
-  showToast(`✓ تم تسجيل رحلة #${num}`);
+  showToast(`✓ رحلة #${num} — ${amount} ر`);
 }
 
-function deleteTrip(id){
-  trips=trips.filter(t=>t.id!==id);
-  trips.forEach((t,i)=>{t.num=i+1;t.name=`رحلة #${i+1}`;});
-  save();render();buildStrip();
+function addExpense(){
+  const amount=parseFloat(document.getElementById('expAmount').value);
+  const note=document.getElementById('expNote').value.trim();
+  if(!amount||amount<=0){showToast('أدخل مبلغ صحيح ✕');return;}
+  const num=expenses.length+1;
+  expenses.push({id:Date.now(),num,cat:curCat,note,amount,
+    time:new Date().toLocaleTimeString('ar-SA',{hour:'2-digit',minute:'2-digit'})});
+  saveE();render();buildStrip();
+  document.getElementById('expAmount').value='';
+  document.getElementById('expNote').value='';
+  showToast(`✕ مصروف #${num} — ${amount} ر`);
 }
-function clearAll(){if(!trips.length)return;if(confirm('مسح كل رحلات هذا اليوم؟')){trips=[];save();render();buildStrip();showToast('تم المسح');}}
+
+function deleteTrip(id){trips=trips.filter(t=>t.id!==id);trips.forEach((t,i)=>{t.num=i+1;t.name=`رحلة #${i+1}`;});saveI();render();}
+function deleteExpense(id){expenses=expenses.filter(e=>e.id!==id);expenses.forEach((e,i)=>e.num=i+1);saveE();render();}
+function clearTrips(){if(!trips.length)return;if(confirm('مسح كل رحلات اليوم؟')){trips=[];saveI();render();buildStrip();}}
+function clearExpenses(){if(!expenses.length)return;if(confirm('مسح كل مصاريف اليوم؟')){expenses=[];saveE();render();buildStrip();}}
 
 const PAY={cash:'كاش 💵',card:'بطاقة 💳',app:'تطبيق 📱'};
 const APP={uber:'⚫ Uber',bolt:'🟢 Bolt',indrive:'🔵 inDrive',kayaan:'🟠 كيان'};
+const CICO={وقود:'⛽',طعام:'🍔',صيانة:'🔧',غسيل:'🚿',مخالفة:'📋',تأمين:'🛡️',إطارات:'🛞',أخرى:'📌'};
 
 function render(){
-  let total=0,cashT=0,cardT=0,appT=0,kmT=0;
-  trips.forEach(t=>{total+=t.amount;kmT+=(t.km||0);
+  let income=0,cashT=0,cardT=0,appT=0,kmT=0;
+  trips.forEach(t=>{income+=t.amount;kmT+=(t.km||0);
     if(t.payment==='cash')cashT+=t.amount;
     else if(t.payment==='card')cardT+=t.amount;
     else appT+=t.amount;});
-  const avg=trips.length?(total/trips.length).toFixed(1):'0';
-  document.getElementById('totalAmount').textContent=total.toFixed(1);
-  document.getElementById('totalTrips').textContent=trips.length;
-  document.getElementById('avgTrip').textContent=avg;
-  document.getElementById('kmTotal').textContent=kmT.toFixed(1);
-  document.getElementById('formBadge').textContent='#'+(trips.length+1);
+  const expTotal=expenses.reduce((s,e)=>s+e.amount,0);
+  const net=income-expTotal;
 
-  const list=document.getElementById('tripsList');
-  if(!trips.length){
-    list.innerHTML='<div class="empty-box"><span class="empty-ico">🚗</span>لا توجد رحلات بعد<br>أضف أول رحلة!</div>';
-    return;
-  }
-  list.innerHTML=[...trips].reverse().map(t=>`
-    <div class="trip-row ${t.payment}">
-      <div class="tr-left">
-        <div class="tr-badge">#${t.num}</div>
-        <div>
-          <div class="tr-name">${t.name}</div>
-          <div class="tr-meta">${PAY[t.payment]} · ${APP[t.app]||t.app}${t.km?' · 🛣️ '+t.km+' كم':''}<br>${t.time}</div>
+  document.getElementById('s_income').textContent=income.toFixed(1);
+  document.getElementById('s_expense').textContent=expTotal.toFixed(1);
+  document.getElementById('s_trips').textContent=trips.length;
+  document.getElementById('s_km').textContent=kmT.toFixed(1);
+  document.getElementById('incBadge').textContent='#'+(trips.length+1);
+  document.getElementById('expBadge').textContent='#'+(expenses.length+1);
+
+  // net card
+  const nc=document.getElementById('netCard');
+  nc.className='net-card '+(net>0?'positive':net<0?'negative':'zero');
+  document.getElementById('netVal').textContent=(net>=0?'+':'')+net.toFixed(1)+' ر';
+  document.getElementById('netIco').textContent=net>0?'📈':net<0?'📉':'📊';
+  document.getElementById('netSub').textContent=
+    income>0?`دخل ${income.toFixed(1)} − مصاريف ${expTotal.toFixed(1)}`:'لم تسجل بيانات بعد';
+
+  // trips list
+  const tl=document.getElementById('tripsList');
+  tl.innerHTML=trips.length
+    ?[...trips].reverse().map(t=>`
+      <div class="item-row income-row ${t.payment}">
+        <div class="ir-left">
+          <div class="ir-badge">#${t.num}</div>
+          <div><div class="ir-name">${t.name}</div>
+          <div class="ir-meta">${PAY[t.payment]} · ${APP[t.app]||t.app}${t.km?' · 🛣️ '+t.km+' كم':''}<br>${t.time}</div></div>
         </div>
-      </div>
-      <div class="tr-right">
-        <div class="tr-amount">${t.amount.toFixed(1)}</div>
-        <button class="del-btn" onclick="deleteTrip(${t.id})">✕</button>
-      </div>
-    </div>`).join('');
+        <div class="ir-right">
+          <div class="ir-amount">${t.amount.toFixed(1)}</div>
+          <button class="del-btn" onclick="deleteTrip(${t.id})">✕</button>
+        </div>
+      </div>`).join('')
+    :'<div class="empty-box"><span class="empty-ico">🚗</span>لا توجد رحلات بعد</div>';
+
+  // expense list
+  const el=document.getElementById('expenseList');
+  el.innerHTML=expenses.length
+    ?[...expenses].reverse().map(e=>`
+      <div class="item-row expense-row">
+        <div class="ir-left">
+          <div class="ir-badge">${CICO[e.cat]||'📌'}</div>
+          <div><div class="ir-name">${e.cat}${e.note?' — '+e.note:''}</div>
+          <div class="ir-meta">مصروف #${e.num} · ${e.time}</div></div>
+        </div>
+        <div class="ir-right">
+          <div class="ir-amount">${e.amount.toFixed(1)}</div>
+          <button class="del-btn" onclick="deleteExpense(${e.id})">✕</button>
+        </div>
+      </div>`).join('')
+    :'<div class="empty-box"><span class="empty-ico">🧾</span>لا توجد مصاريف بعد</div>';
 }
 
-// ── TOTALS SHEET ──
 function openTotals(){
-  // today
   let cashT=0,cardT=0,appT=0;
-  trips.forEach(t=>{
-    if(t.payment==='cash')cashT+=t.amount;
-    else if(t.payment==='card')cardT+=t.amount;
-    else appT+=t.amount;
-  });
-  document.getElementById('t_cashToday').textContent=cashT.toFixed(1)+' ر';
-  document.getElementById('t_cardToday').textContent=cardT.toFixed(1)+' ر';
-  document.getElementById('t_appToday').textContent=appT.toFixed(1)+' ر';
-  // all time
-  let acash=0,acard=0,aapp=0,acashN=0,acardN=0,aappN=0;
+  trips.forEach(t=>{if(t.payment==='cash')cashT+=t.amount;else if(t.payment==='card')cardT+=t.amount;else appT+=t.amount;});
+  const expT=expenses.reduce((s,e)=>s+e.amount,0);
+  document.getElementById('tc_cashT').textContent=cashT.toFixed(1)+' ر';
+  document.getElementById('tc_cardT').textContent=cardT.toFixed(1)+' ر';
+  document.getElementById('tc_appT').textContent=appT.toFixed(1)+' ر';
+  document.getElementById('tc_expT').textContent=expT.toFixed(1)+' ر';
+  let ac=0,ak=0,aa=0,acN=0,akN=0,aaN=0,ae=0,aeN=0;
   Object.keys(localStorage).filter(k=>k.startsWith('kasher_')).forEach(k=>{
-    JSON.parse(localStorage.getItem(k)||'[]').forEach(t=>{
-      if(t.payment==='cash'){acash+=t.amount;acashN++;}
-      else if(t.payment==='card'){acard+=t.amount;acardN++;}
-      else{aapp+=t.amount;aappN++;}
-    });
+    if(k.includes('_exp_')){
+      JSON.parse(localStorage.getItem(k)||'[]').forEach(e=>{ae+=e.amount;aeN++;});
+    } else {
+      JSON.parse(localStorage.getItem(k)||'[]').forEach(t=>{
+        if(t.payment==='cash'){ac+=t.amount;acN++;}
+        else if(t.payment==='card'){ak+=t.amount;akN++;}
+        else{aa+=t.amount;aaN++;}
+      });
+    }
   });
-  document.getElementById('t_cashAll').textContent=acash.toFixed(1)+' ر';
-  document.getElementById('t_cardAll').textContent=acard.toFixed(1)+' ر';
-  document.getElementById('t_appAll').textContent=aapp.toFixed(1)+' ر';
-  document.getElementById('t_cashAllSub').textContent=acashN+' رحلة';
-  document.getElementById('t_cardAllSub').textContent=acardN+' رحلة';
-  document.getElementById('t_appAllSub').textContent=aappN+' رحلة';
+  document.getElementById('tc_cashA').textContent=ac.toFixed(1)+' ر';
+  document.getElementById('tc_cardA').textContent=ak.toFixed(1)+' ر';
+  document.getElementById('tc_appA').textContent=aa.toFixed(1)+' ر';
+  document.getElementById('tc_expA').textContent=ae.toFixed(1)+' ر';
+  document.getElementById('tc_cashAs').textContent=acN+' رحلة';
+  document.getElementById('tc_cardAs').textContent=akN+' رحلة';
+  document.getElementById('tc_appAs').textContent=aaN+' رحلة';
+  document.getElementById('tc_expAs').textContent=aeN+' مصروف';
   document.getElementById('totalsModal').classList.add('open');
 }
 
-// ── HISTORY SHEET ──
 function openHistory(){
-  const keys=Object.keys(localStorage).filter(k=>k.startsWith('kasher_')).sort().reverse();
-  let gTotal=0,gTrips=0,gKm=0;
-  const rows=keys.map(k=>{
+  const ikeys=Object.keys(localStorage).filter(k=>k.startsWith('kasher_')&&!k.includes('_exp_')).sort().reverse();
+  let gInc=0,gExp=0,gTrips=0;
+  const rows=ikeys.map(k=>{
     const d=k.replace('kasher_','');
     const ts=JSON.parse(localStorage.getItem(k)||'[]');
-    const dt=ts.reduce((s,t)=>s+t.amount,0);
-    const dk=ts.reduce((s,t)=>s+(t.km||0),0);
-    gTotal+=dt;gTrips+=ts.length;gKm+=dk;
+    const es=JSON.parse(localStorage.getItem('kasher_exp_'+d)||'[]');
+    const inc=ts.reduce((s,t)=>s+t.amount,0);
+    const exp=es.reduce((s,e)=>s+e.amount,0);
+    const net=inc-exp;
+    gInc+=inc;gExp+=exp;gTrips+=ts.length;
     const label=new Date(d).toLocaleDateString('ar-SA',{weekday:'short',month:'short',day:'numeric'});
     return `<div class="hist-row" onclick="goDay('${d}')">
-      <div><div class="hr-date">${label}</div><div class="hr-meta">${ts.length} رحلة${dk?' · 🛣️ '+dk.toFixed(1)+' كم':''}</div></div>
-      <div class="hr-amt">${dt.toFixed(1)} ر</div></div>`;
+      <div><div class="hr-date">${label}</div><div class="hr-meta">${ts.length} رحلة · مصاريف ${exp.toFixed(1)} ر</div></div>
+      <div class="hr-right">
+        <div class="hr-income">${inc.toFixed(1)} ر</div>
+        <div class="hr-net ${net>=0?'pos':'neg'}">${net>=0?'+':''}${net.toFixed(1)} ر صافي</div>
+      </div></div>`;
   });
-  document.getElementById('grandTotal').textContent=gTotal.toFixed(1)+' ر';
-  document.getElementById('grandSub').innerHTML=`${keys.length} يوم &nbsp;·&nbsp; ${gTrips} رحلة &nbsp;·&nbsp; 🛣️ ${gKm.toFixed(1)} كم`;
+  document.getElementById('grandTotal').textContent=gInc.toFixed(1)+' ر';
+  document.getElementById('grandSub').innerHTML=
+    `${ikeys.length} يوم &nbsp;·&nbsp; ${gTrips} رحلة &nbsp;·&nbsp; مصاريف ${gExp.toFixed(1)} ر &nbsp;·&nbsp; صافي ${(gInc-gExp)>=0?'+':''}${(gInc-gExp).toFixed(1)} ر`;
   document.getElementById('histList').innerHTML=rows.length?rows.join(''):'<div class="hist-empty">لا يوجد سجل بعد</div>';
   document.getElementById('histModal').classList.add('open');
 }
-function goDay(d){dateInput.value=d;load();buildStrip();setTopDate();close1('histModal');}
+function goDay(d){dateState.value=d;loadDay();buildStrip();setTopDate();close1('histModal');}
 function close1(id){document.getElementById(id).classList.remove('open');}
 function closeOut(e,id){if(e.target===document.getElementById(id))close1(id);}
+function showToast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2300);}
 
-function showToast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2200);}
-
-// init
-setTopDate();
-buildStrip();
-load();
+setTopDate();buildStrip();loadDay();
 </script>
-<script>
-if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js').catch(()=>{});});}
-</script>
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js').catch(()=>{});});}</script>
 </body>
 </html>
